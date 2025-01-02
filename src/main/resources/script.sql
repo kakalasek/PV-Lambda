@@ -4,6 +4,7 @@ CREATE DATABASE garden;
 COMMIT;
 
 USE garden;
+
 CREATE TABLE Flowerbed(
 	id INT NOT NULL AUTO_INCREMENT,
     size DECIMAL(10,2) NOT NULL, # m^2
@@ -14,7 +15,7 @@ CREATE TABLE Flowerbed(
 CREATE TABLE Plant(
 	id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
-	life_length ENUM('Annual', 'Perrenial', 'Biennial'),
+	life_length ENUM('Annual', 'Perennial', 'Biennial'),
 	growing_time INT, # day
 	spacing INT, # cm
 	planting_depth INT, # cm
