@@ -1,4 +1,7 @@
 package com.DbObjects.Storage;
 
-public interface StorageRecordDao {
+import com.DbObjects.Dao;
+
+public interface StorageRecordDao extends Dao<StorageRecord> {
+
 }
