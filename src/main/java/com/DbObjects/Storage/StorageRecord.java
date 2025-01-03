@@ -6,4 +6,9 @@ public class StorageRecord {
 
     private Packaging packaging;
     private Plant plant;
+
+    public StorageRecord(Packaging packaging, Plant plant){
+        this.packaging = packaging;
+        this.plant = plant;
+    }
 }

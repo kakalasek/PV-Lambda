@@ -33,9 +33,9 @@ public class DatabaseConnection {
 
             prop.load(ip);
 
-            this.url = prop.getProperty("url");
-            this.username = prop.getProperty("username");
-            this.password = prop.getProperty("password");
+            this.url = prop.getProperty("URL");
+            this.username = prop.getProperty("USERNAME");
+            this.password = prop.getProperty("PASSWORD");
 
         } catch (IOException e){
             throw new LoadingPropertiesException("Loading properties failed:\n" + e);
