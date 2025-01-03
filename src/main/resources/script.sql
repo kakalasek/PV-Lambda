@@ -58,7 +58,7 @@ USE garden;
 
 CREATE VIEW Planted_plants
 AS 
-SELECT Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant, 
+SELECT Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant, Plant.pre_growing AS Pre_Growing,
 Planting.date_from AS Date_Of_Planting, Planting.date_to AS Date_Of_Disposal, Planting.number_of_seeds AS Number_Of_Seeds, 
 Flowerbed.number AS Flowerbed_Number, Flowerbed.size AS Flowerbed_Size
 FROM Planting
@@ -70,7 +70,7 @@ USE garden;
 
 CREATE VIEW Stored_plants
 AS
-SELECT Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant,
+SELECT Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant, Plant.pre_growing AS Pre_Growing,
 Packaging.expiration_date AS Expiration_Date, Packaging.number_of_seeds AS Number_Of_Seeds_In_Package
 FROM Storage
 INNER JOIN Plant ON Storage.plant_id = Plant.id
