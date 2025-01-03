@@ -63,4 +63,5 @@ Documentation
 Sources
 ===
 
-Nader Medhat - Understanding Database Isolation Levels - https://medium.com/nerd-for-tech/understanding-database-isolation-levels-c4ebcd55c6b9
+Nader Medhat - Understanding Database Isolation Levels - https://medium.com/nerd-for-tech/understanding-database-isolation-levels-c4ebcd55c6b9          
+Telusko - Java Database Connectivity | JDBC -https://youtu.be/7v2OnUti2eM?feature=shared 
