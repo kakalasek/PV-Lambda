@@ -33,9 +33,9 @@ public class MainLoop {
             | 6) Show Plantings              |
             | 7) Change Database Isolation   |
             |    Level                       |
-            | 8) Non-Repeatable Read        |
+            | 8) Non-Repeatable Read         |
             |     Example                    |
-            | 9) Phantom Read Example       |
+            | 9) Phantom Read Example        |
             | 0) Exit                        |
             +--------------------------------+
             
@@ -77,7 +77,7 @@ public class MainLoop {
                     case 3 -> System.out.println("Plant seeds");
                     case 4 -> System.out.println("Liquidate plants");
                     case 5 -> System.out.println(selector.selectStorageRecords());
-                    case 6 -> System.out.println("Show plantings");
+                    case 6 -> System.out.println(selector.selectPlantings());
                     case 7 -> System.out.println("Change database isolation level");
                     case 8 -> System.out.println("Non-Repeatable read example");
                     case 9 -> System.out.println("Phantom Read example");
