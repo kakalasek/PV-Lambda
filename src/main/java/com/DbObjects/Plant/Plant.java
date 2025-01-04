@@ -21,7 +21,12 @@ public class Plant {
         this.lifeLength = lifeLength;
         this.growingTime = growingTime;
         this.spacing = spacing;
+        this.plantingDepth = plantingDepth;
         this.plantingTime = plantingTime;
         this.pre_growing = pre_growing;
+    }
+
+    public String toString(){
+        return name + ", " + lifeLength + ", " + growingTime + ", " + spacing + ", " + plantingDepth + ", " + plantingTime + ", " + pre_growing;
     }
 }

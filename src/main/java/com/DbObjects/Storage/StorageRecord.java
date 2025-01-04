@@ -11,4 +11,8 @@ public class StorageRecord {
         this.packaging = packaging;
         this.plant = plant;
     }
+
+    public String toString(){
+        return packaging.toString() + ", " + plant.toString();
+    }
 }

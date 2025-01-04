@@ -11,4 +11,8 @@ public class Packaging {
         this.expirationDate = expirationDate;
         this.numberOfSeeds = numberOfSeeds;
     }
+
+    public String toString(){
+        return expirationDate + ", " + numberOfSeeds;
+    }
 }
