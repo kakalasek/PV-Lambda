@@ -3,15 +3,13 @@ package com.DbObjects.Storage;
 import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.LoadingPropertiesException;
 import com.Database.DatabaseConnection;
+import com.DbObjects.Dao;
 import com.DbObjects.Plant.Plant;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
-public class StorageRecordDaoImpl implements StorageRecordDao{
+public class StorageRecordDaoImpl implements StorageRecordDao {
     @Override
     public ArrayList<StorageRecord> getAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
         ArrayList<StorageRecord> storageRecords = new ArrayList<>();
@@ -51,5 +49,65 @@ public class StorageRecordDaoImpl implements StorageRecordDao{
         conn.close();
 
         return storageRecords;
+    }
+
+    @Override
+    public void insert(StorageRecord item) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
+        DatabaseConnection conn = new DatabaseConnection();
+        conn.connect();
+
+        String sqlGetPlantId = "SELECT id FROM Plant WHERE name = ?;";
+        int plantId = -1;
+        Plant plant = item.getPlant();
+
+        try(PreparedStatement psGetPlantId = conn.getConnection().prepareStatement(sqlGetPlantId)){
+            psGetPlantId.setString(1, plant.getName());
+
+            ResultSet rs = psGetPlantId.executeQuery();
+
+            if(rs.next()){
+                plantId = rs.getInt("id");
+            }
+        }
+
+        String sqlInsertPackaging = "INSERT INTO Packaging(expiration_date, number_of_seeds) " +
+                "VALUES (?, ?);";
+        int packagingId = -1;
+        Packaging packaging = item.getPackaging();
+
+        try(PreparedStatement psInsertPackaging = conn.getConnection().prepareStatement(sqlInsertPackaging, Statement.RETURN_GENERATED_KEYS)){
+            psInsertPackaging.setDate(1, packaging.getExpirationDate());
+            psInsertPackaging.setInt(2, packaging.getNumberOfSeeds());
+
+            psInsertPackaging.execute();
+
+            try(ResultSet generatedKeys = psInsertPackaging.getGeneratedKeys()){
+                if (generatedKeys.next()){
+                    packagingId = generatedKeys.getInt(1);
+                }
+            }
+        }
+
+        String sqlStorageInsert = "INSERT INTO Storage(plant_id, packaging_id) " +
+                "VALUES (?, ?);";
+
+        try(PreparedStatement psStorageInsert = conn.getConnection().prepareStatement(sqlStorageInsert)){
+            psStorageInsert.setInt(1, plantId);
+            psStorageInsert.setInt(2, packagingId);
+
+            psStorageInsert.execute();
+        }
+
+        conn.close();
+    }
+
+    @Override
+    public void updateNumberOfSeeds(StorageRecord storageRecord) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
+        DatabaseConnection conn = new DatabaseConnection();
+        conn.connect();
+
+
+
+        conn.close();
     }
 }

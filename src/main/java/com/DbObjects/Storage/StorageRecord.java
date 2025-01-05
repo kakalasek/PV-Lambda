@@ -12,6 +12,14 @@ public class StorageRecord {
         this.plant = plant;
     }
 
+    public Packaging getPackaging() {
+        return packaging;
+    }
+
+    public Plant getPlant() {
+        return plant;
+    }
+
     public String toString(){
         return packaging.toString() + ", " + plant.toString();
     }

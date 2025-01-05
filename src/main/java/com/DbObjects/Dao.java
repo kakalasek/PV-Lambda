@@ -8,4 +8,5 @@ import java.util.ArrayList;
 
 public interface Dao<T> {
     ArrayList<T> getAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException;
+    void insert(T item) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException;
 }

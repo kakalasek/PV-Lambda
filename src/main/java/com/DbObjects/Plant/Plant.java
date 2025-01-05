@@ -27,6 +27,34 @@ public class Plant {
         this.pre_growing = pre_growing;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public plantType getLifeLength() {
+        return lifeLength;
+    }
+
+    public int getGrowingTime() {
+        return growingTime;
+    }
+
+    public int getSpacing() {
+        return spacing;
+    }
+
+    public int getPlantingDepth() {
+        return plantingDepth;
+    }
+
+    public int getPlantingTime() {
+        return plantingTime;
+    }
+
+    public boolean isPre_growing() {
+        return pre_growing;
+    }
+
     public String toString(){
         return name + ", " +
                 lifeLength + ", " +

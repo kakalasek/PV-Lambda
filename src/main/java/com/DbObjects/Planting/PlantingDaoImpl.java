@@ -3,6 +3,7 @@ package com.DbObjects.Planting;
 import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.LoadingPropertiesException;
 import com.Database.DatabaseConnection;
+import com.DbObjects.Dao;
 import com.DbObjects.Plant.Plant;
 
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Date;
 
-public class PlantingDaoImpl implements PlantingDao{
+public class PlantingDaoImpl implements Dao<Planting> {
     @Override
     public ArrayList<Planting> getAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
         ArrayList<Planting> plantings = new ArrayList<>();
@@ -56,5 +57,10 @@ public class PlantingDaoImpl implements PlantingDao{
         conn.close();
 
         return plantings;
+    }
+
+    @Override
+    public void insert(Planting item) {
+
     }
 }

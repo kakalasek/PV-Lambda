@@ -2,6 +2,7 @@ package com.MainLoop;
 
 import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.LoadingPropertiesException;
+import com.MainLoop.Insert.Inserter;
 import com.MainLoop.Select.Selector;
 
 import java.sql.SQLException;
@@ -45,11 +46,12 @@ public class MainLoop {
 
     private final Scanner sc;
     private final Selector selector;
+    private final Inserter inserter;
 
     public int selectOption(){
         String userSelect = sc.nextLine();
 
-        if (!userSelect.matches("\\d")){
+        if (!userSelect.matches("\\d+")){
             throw new InputMismatchException("Your pick must be a number of one of the options!");
         }
 
@@ -59,6 +61,7 @@ public class MainLoop {
     public MainLoop(){
         this.sc = new Scanner(System.in);
         this.selector = new Selector();
+        this.inserter = new Inserter(sc);
     }
 
     public void startLoop(){
@@ -74,9 +77,9 @@ public class MainLoop {
 
                 switch (userSelect){
                     case 0 -> anotherOne = false;
-                    case 1 -> System.out.println("Add seeds to storage");
+                    case 1 -> System.out.println(inserter.insertStorageRecord());
                     case 2 -> System.out.println("Remove seeds from storage");
-                    case 3 -> System.out.println("Plant seeds");
+                    case 3 -> System.out.println(inserter.insertPlanting());
                     case 4 -> System.out.println("Liquidate plants");
                     case 5 -> System.out.println(selector.selectStorageRecords());
                     case 6 -> System.out.println(selector.selectPlantings());

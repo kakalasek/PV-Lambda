@@ -56,8 +56,8 @@ public class DatabaseConnection {
      * Creates an active connection for this DatabaseConnection object
      * @throws SQLException If anything goes wrong with creating the connection
      */
-    public void connect() throws SQLException, CouldNotEstablishConnectionException {
-        connection = DriverManager.getConnection(url, username, password);
+    public void connect() throws SQLException {
+        if(connection == null) connection = DriverManager.getConnection(url, username, password);
     }
 
     /**
