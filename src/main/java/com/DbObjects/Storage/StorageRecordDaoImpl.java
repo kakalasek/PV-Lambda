@@ -102,11 +102,32 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
     }
 
     @Override
-    public void updateNumberOfSeeds(StorageRecord storageRecord) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
+    public void updateNumberOfSeeds(StorageRecord storageRecord, int newNumberOfSeeds) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
         DatabaseConnection conn = new DatabaseConnection();
         conn.connect();
 
+        String sqlGetPackagingId = "SELECT id FROM Packaging WHERE expiration_date = ? AND number_of_seeds = ?;";
+        int packagingId = -1;
 
+        try(PreparedStatement psGetPackagingId = conn.getConnection().prepareStatement(sqlGetPackagingId)){
+            psGetPackagingId.setDate(1, storageRecord.getPackaging().getExpirationDate());
+            psGetPackagingId.setInt(2, storageRecord.getPackaging().getNumberOfSeeds());
+
+            ResultSet rs = psGetPackagingId.executeQuery();
+
+            if(rs.next()){
+                packagingId = rs.getInt("id");
+            }
+        }
+
+        String sqlUpdateNumberOfSeeds = "CALL plant_seeds(?, ?);";
+
+        try(PreparedStatement psUpdateNumberOfSeeds = conn.getConnection().prepareStatement(sqlUpdateNumberOfSeeds)){
+            psUpdateNumberOfSeeds.setInt(1, packagingId);
+            psUpdateNumberOfSeeds.setInt(2, newNumberOfSeeds);
+
+            psUpdateNumberOfSeeds.execute();
+        }
 
         conn.close();
     }

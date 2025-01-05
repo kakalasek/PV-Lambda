@@ -20,6 +20,26 @@ public class Planting {
         this.plant = plant;
     }
 
+    public Date getDateFrom() {
+        return dateFrom;
+    }
+
+    public Date getDateTo() {
+        return dateTo;
+    }
+
+    public int getNumberOfSeeds() {
+        return numberOfSeeds;
+    }
+
+    public Flowerbed getFlowerbed() {
+        return flowerbed;
+    }
+
+    public Plant getPlant() {
+        return plant;
+    }
+
     public String toString(){
         return (dateFrom != null ? dateFrom : "Unknown") + ", " +
                 (dateTo != null ? dateFrom : "Still Planted") + ", " +

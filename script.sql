@@ -65,3 +65,18 @@ Packaging.expiration_date AS Expiration_Date, Packaging.number_of_seeds AS Numbe
 FROM Storage
 INNER JOIN Plant ON Storage.plant_id = Plant.id
 INNER JOIN Packaging ON Storage.packaging_id = Packaging.id;
+
+DELIMITER //
+
+CREATE PROCEDURE plant_seeds (IN var_id INT, IN var_number_of_seeds INT)
+
+BEGIN
+
+		UPDATE Packaging SET number_of_seeds = var_number_of_seeds WHERE id = var_id;
+
+		DELETE FROM Packaging
+		WHERE number_of_seeds <= 0;
+
+END; //
+
+DELIMITER ;

@@ -60,7 +60,51 @@ public class PlantingDaoImpl implements Dao<Planting> {
     }
 
     @Override
-    public void insert(Planting item) {
+    public void insert(Planting item) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
+        DatabaseConnection conn = new DatabaseConnection();
+        conn.connect();
 
+        String sqlGetPlantId = "SELECT id FROM Plant WHERE name = ?;";
+        int plantId = -1;
+        Plant plant = item.getPlant();
+
+        try(PreparedStatement psGetPlantId = conn.getConnection().prepareStatement(sqlGetPlantId)){
+            psGetPlantId.setString(1, plant.getName());
+
+            ResultSet rs = psGetPlantId.executeQuery();
+
+            if(rs.next()){
+                plantId = rs.getInt("id");
+            }
+        }
+
+        String sqlGetFlowerbedId = "SELECT id FROM Flowerbed WHERE number = ?;";
+        int flowerbedId = -1;
+        Flowerbed flowerbed = item.getFlowerbed();
+
+        try(PreparedStatement psGetFlowerbedId = conn.getConnection().prepareStatement(sqlGetFlowerbedId)){
+            psGetFlowerbedId.setInt(1, flowerbed.getNumber());
+
+            ResultSet rs = psGetFlowerbedId.executeQuery();
+
+            if(rs.next()){
+                flowerbedId = rs.getInt("id");
+            }
+        }
+
+        String sqlInsertPlanting = "INSERT INTO Planting(date_from, number_of_seeds, plant_id, flowerbed_id) " +
+                "VALUES (?, ?, ?, ?);";
+
+        try(PreparedStatement psInsertPlanting = conn.getConnection().prepareStatement(sqlInsertPlanting)){
+            psInsertPlanting.setDate(1, item.getDateFrom());
+            psInsertPlanting.setInt(2, item.getNumberOfSeeds());
+            psInsertPlanting.setInt(3, plantId);
+            psInsertPlanting.setInt(4, flowerbedId);
+
+            psInsertPlanting.execute();
+
+        }
+
+        conn.close();
     }
 }

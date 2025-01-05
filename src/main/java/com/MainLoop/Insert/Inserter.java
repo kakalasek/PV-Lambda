@@ -101,8 +101,7 @@ public class Inserter {
         int numberOfSeeds = Integer.parseInt(numberOfSeedsString);
         if(numberOfSeeds > storageRecord.getPackaging().getNumberOfSeeds()) return "The number of seeds must be equal to or less than the number of seeds inside the chosen package";
 
-        storageRecord.getPackaging().setNumberOfSeeds(numberOfSeeds);
-        storageRecordDao.updateNumberOfSeeds(storageRecord);
+        storageRecordDao.updateNumberOfSeeds(storageRecord, storageRecord.getPackaging().getNumberOfSeeds() - numberOfSeeds);
 
         ArrayList<Flowerbed> flowerbeds = flowerbedDao.getAll();
         for(Flowerbed flowerbed : flowerbeds){

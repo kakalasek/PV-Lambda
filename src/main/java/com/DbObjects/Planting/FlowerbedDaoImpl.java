@@ -15,7 +15,7 @@ public class FlowerbedDaoImpl implements Dao<Flowerbed> {
     public ArrayList<Flowerbed> getAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
         ArrayList<Flowerbed> flowerbeds = new ArrayList<>();
         DatabaseConnection conn = new DatabaseConnection();
-        conn.close();
+        conn.connect();
 
         String sqlSelectAll = "SELECT * FROM Flowerbed;";
 

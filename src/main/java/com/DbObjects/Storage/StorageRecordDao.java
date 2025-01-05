@@ -7,5 +7,5 @@ import com.DbObjects.Dao;
 import java.sql.SQLException;
 
 public interface StorageRecordDao extends Dao<StorageRecord> {
-    void updateNumberOfSeeds(StorageRecord storageRecord) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException;
+    void updateNumberOfSeeds(StorageRecord storageRecord, int newNumberOfSeeds) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException;
 }
