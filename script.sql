@@ -1,7 +1,4 @@
-SET autocommit=0;
-
 CREATE DATABASE garden;
-COMMIT;
 
 USE garden;
 
@@ -52,10 +49,6 @@ CREATE TABLE Storage(
 	CONSTRAINT FK_Storage_Packaging FOREIGN KEY (packaging_id) REFERENCES Packaging(id)
 );
 
-COMMIT;
-
-USE garden;
-
 CREATE VIEW Planted_plants
 AS 
 SELECT Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant, Plant.pre_growing AS Pre_Growing,
@@ -64,9 +57,6 @@ Flowerbed.number AS Flowerbed_Number, Flowerbed.size AS Flowerbed_Size
 FROM Planting
 INNER JOIN Plant ON Planting.plant_id = Plant.id
 INNER JOIN Flowerbed ON Planting.flowerbed_id = Flowerbed.id;
-COMMIT;
-
-USE garden;
 
 CREATE VIEW Stored_plants
 AS
@@ -75,4 +65,3 @@ Packaging.expiration_date AS Expiration_Date, Packaging.number_of_seeds AS Numbe
 FROM Storage
 INNER JOIN Plant ON Storage.plant_id = Plant.id
 INNER JOIN Packaging ON Storage.packaging_id = Packaging.id;
-COMMIT;

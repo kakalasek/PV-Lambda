@@ -36,6 +36,8 @@ public class MainLoop {
             | 8) Non-Repeatable Read         |
             |     Example                    |
             | 9) Phantom Read Example        |
+            | 10) Generate Report            |
+            | 11) Import Plants from file    |
             | 0) Exit                        |
             +--------------------------------+
             
@@ -81,6 +83,8 @@ public class MainLoop {
                     case 7 -> System.out.println("Change database isolation level");
                     case 8 -> System.out.println("Non-Repeatable read example");
                     case 9 -> System.out.println("Phantom Read example");
+                    case 10 -> System.out.println("Report Generated");
+                    case 11 -> System.out.println("Plants imported from file");
                     default -> throw new InputMismatchException("Your pick must a number of one of the options!");
                 }
 
