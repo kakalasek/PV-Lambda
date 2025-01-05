@@ -21,6 +21,9 @@ public class Planting {
     }
 
     public String toString(){
-        return dateFrom + ", " + dateTo + ", " + numberOfSeeds + ", " + flowerbed.toString() + ", " + plant.toString();
+        return (dateFrom != null ? dateFrom : "Unknown") + ", " +
+                (dateTo != null ? dateFrom : "Still Planted") + ", " +
+                (numberOfSeeds != 0 ? numberOfSeeds : "Unknown") + ", " +
+                flowerbed.toString() + ", " + plant.toString();
     }
 }

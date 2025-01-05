@@ -11,6 +11,7 @@ public class Flowerbed {
     }
 
     public String toString(){
-        return size + ", " + number;
+        return (size != 0.0 ? size + "m^2" : "Unknown") + ", " +
+                number;
     }
 }

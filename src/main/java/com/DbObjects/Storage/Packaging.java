@@ -13,6 +13,7 @@ public class Packaging {
     }
 
     public String toString(){
-        return expirationDate + ", " + numberOfSeeds;
+        return (expirationDate != null ? expirationDate : "Unknown") + ", " +
+                (numberOfSeeds != 0 ? numberOfSeeds : "Unknown");
     }
 }

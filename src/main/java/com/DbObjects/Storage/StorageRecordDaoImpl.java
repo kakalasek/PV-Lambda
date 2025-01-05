@@ -18,12 +18,12 @@ public class StorageRecordDaoImpl implements StorageRecordDao{
         DatabaseConnection conn = new DatabaseConnection();
         conn.connect();
 
-        String sqlSelectAll = "SELECT * FROM Stored_plants";
+        String sqlSelectAll = "SELECT * FROM Stored_plants;";
 
         try (PreparedStatement psSelectAll = conn.getConnection().prepareStatement(sqlSelectAll)) {
             ResultSet rs = psSelectAll.executeQuery();
 
-            if(rs.next()){
+            while(rs.next()){
                 String plantName = rs.getString("Plant_Name");
                 Plant.plantType plantLifeLength = Plant.plantType.valueOf(rs.getString("Life_Length"));
                 int plantGrowingTime = rs.getInt("Time_To_Grow");

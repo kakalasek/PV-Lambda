@@ -3,6 +3,7 @@ package com.DbObjects.Plant;
 public class Plant {
 
     public enum plantType{
+        Unknown,
         Annual,
         Perennial,
         Biennial
@@ -27,6 +28,12 @@ public class Plant {
     }
 
     public String toString(){
-        return name + ", " + lifeLength + ", " + growingTime + ", " + spacing + ", " + plantingDepth + ", " + plantingTime + ", " + pre_growing;
+        return name + ", " +
+                lifeLength + ", " +
+                (growingTime != 0 ? growingTime + "days" : "Unknown") + ", " +
+                (spacing != 0 ? spacing + "cm" : "Unknown") + ", " +
+                (plantingDepth != 0 ?  plantingDepth + "cm" : "Unknown") + ", " +
+                (plantingTime != 0 ? plantingTime + "(month)" : "Unknown") + ", " +
+                (pre_growing ? "yes" : "no");
     }
 }
