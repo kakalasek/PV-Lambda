@@ -1,4 +1,4 @@
-package com.DbObjects.Storage;
+package com.DbObjects.Storage.Packaging;
 
 import java.sql.Date;
 

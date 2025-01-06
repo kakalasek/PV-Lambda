@@ -2,10 +2,10 @@ package com.MainLoop.Select;
 
 import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.LoadingPropertiesException;
-import com.DbObjects.Planting.Planting;
-import com.DbObjects.Planting.PlantingDaoImpl;
-import com.DbObjects.Storage.StorageRecord;
-import com.DbObjects.Storage.StorageRecordDaoImpl;
+import com.DbObjects.Planting.Planting.Planting;
+import com.DbObjects.Planting.Planting.PlantingDaoImpl;
+import com.DbObjects.Storage.StorageRecord.StorageRecord;
+import com.DbObjects.Storage.StorageRecord.StorageRecordDaoImpl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

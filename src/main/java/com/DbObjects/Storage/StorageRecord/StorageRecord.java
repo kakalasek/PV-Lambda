@@ -1,6 +1,7 @@
-package com.DbObjects.Storage;
+package com.DbObjects.Storage.StorageRecord;
 
 import com.DbObjects.Plant.Plant;
+import com.DbObjects.Storage.Packaging.Packaging;
 
 public class StorageRecord {
 

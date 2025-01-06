@@ -1,6 +1,7 @@
-package com.DbObjects.Planting;
+package com.DbObjects.Planting.Planting;
 
 import com.DbObjects.Plant.Plant;
+import com.DbObjects.Planting.Flowerbed.Flowerbed;
 
 import java.sql.Date;
 

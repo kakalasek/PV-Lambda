@@ -1,4 +1,4 @@
-package com.DbObjects.Storage;
+package com.DbObjects.Storage.StorageRecord;
 
 import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.LoadingPropertiesException;

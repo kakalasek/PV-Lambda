@@ -1,9 +1,13 @@
 package com.MainLoop;
 
 import com.CustomExceptions.CouldNotEstablishConnectionException;
+import com.CustomExceptions.InvalidOptionException;
 import com.CustomExceptions.LoadingPropertiesException;
+import com.CustomExceptions.NumberNotWithinOptionsException;
 import com.MainLoop.Insert.Inserter;
+import com.MainLoop.Menu.Menu;
 import com.MainLoop.Select.Selector;
+import com.utils.InputChecker.InputChecker;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
@@ -45,56 +49,59 @@ public class MainLoop {
             """;
 
     private final Scanner sc;
+    private final Menu menu;
+
     private final Selector selector;
     private final Inserter inserter;
 
-    public int selectOption(){
-        String userSelect = sc.nextLine();
-
-        if (!userSelect.matches("\\d+")){
-            throw new InputMismatchException("Your pick must be a number of one of the options!");
-        }
-
-        return Integer.parseInt(userSelect);
-    }
-
     public MainLoop(){
         this.sc = new Scanner(System.in);
+        this.menu = new Menu();
         this.selector = new Selector();
         this.inserter = new Inserter(sc);
     }
 
-    public void startLoop(){
-        boolean anotherOne = true;
+    public int selectOption() throws InvalidOptionException {
+        String userSelect = sc.nextLine();
 
+        if (userSelect.equalsIgnoreCase("end")) return -1;
+
+        if (!InputChecker.isPositiveNumber(userSelect)) throw new InvalidOptionException("Your pick must be a number of one of the options!");
+
+        return Integer.parseInt(userSelect);
+    }
+
+    private void registerMenuItems(){
+        menu.registerItem("Add Seeds To Storage", new NotImplementedCommand());
+        menu.registerItem("Plant Seeds", new NotImplementedCommand());
+        menu.registerItem("Remove Seeds From Storage", new NotImplementedCommand());
+        menu.registerItem("Liquidate Plants", new NotImplementedCommand());
+        menu.registerItem("Show Stored Seeds", new NotImplementedCommand());
+        menu.registerItem("Show Plantings", new NotImplementedCommand());
+        menu.registerItem("Change DB Isolation Level", new NotImplementedCommand());
+        menu.registerItem("Generate Report", new NotImplementedCommand());
+        menu.registerItem("Import Plants From File", new NotImplementedCommand());
+        menu.registerItem("Non-Repeatable Read", new NotImplementedCommand());
+        menu.registerItem("Phantom Read", new NotImplementedCommand());
+    }
+
+    public void startLoop(){
         System.out.println(helloMessage);
 
-        while (anotherOne) {
+        registerMenuItems();
+
+        while (true) {
             try{
-                System.out.println(prompt);
+                System.out.println(menu.display());
 
                 int userSelect = selectOption();
 
-                switch (userSelect){
-                    case 0 -> anotherOne = false;
-                    case 1 -> System.out.println(inserter.insertStorageRecord());
-                    case 2 -> System.out.println("Remove seeds from storage");
-                    case 3 -> System.out.println(inserter.insertPlanting());
-                    case 4 -> System.out.println("Liquidate plants");
-                    case 5 -> System.out.println(selector.selectStorageRecords());
-                    case 6 -> System.out.println(selector.selectPlantings());
-                    case 7 -> System.out.println("Change database isolation level");
-                    case 8 -> System.out.println("Non-Repeatable read example");
-                    case 9 -> System.out.println("Phantom Read example");
-                    case 10 -> System.out.println("Report Generated");
-                    case 11 -> System.out.println("Plants imported from file");
-                    default -> throw new InputMismatchException("Your pick must a number of one of the options!");
-                }
+                if (userSelect == -1) break;
 
-            } catch (InputMismatchException e){
+                menu.selectItem(userSelect);
+
+            } catch (InvalidOptionException |NumberNotWithinOptionsException e){
                 System.out.println(e.getMessage());
-            } catch (LoadingPropertiesException | CouldNotEstablishConnectionException | SQLException e) {
-                throw new RuntimeException(e);
             }
         }
     }

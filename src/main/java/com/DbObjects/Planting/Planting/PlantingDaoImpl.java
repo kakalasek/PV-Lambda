@@ -1,10 +1,11 @@
-package com.DbObjects.Planting;
+package com.DbObjects.Planting.Planting;
 
 import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.LoadingPropertiesException;
 import com.Database.DatabaseConnection;
 import com.DbObjects.Dao;
 import com.DbObjects.Plant.Plant;
+import com.DbObjects.Planting.Flowerbed.Flowerbed;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,4 +1,4 @@
-package com.DbObjects.Planting;
+package com.DbObjects.Planting.Flowerbed;
 
 public class Flowerbed {
 
