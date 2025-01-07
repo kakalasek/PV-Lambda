@@ -51,14 +51,9 @@ public class MainLoop {
     private final Scanner sc;
     private final Menu menu;
 
-    private final Selector selector;
-    private final Inserter inserter;
-
     public MainLoop(){
         this.sc = new Scanner(System.in);
         this.menu = new Menu();
-        this.selector = new Selector();
-        this.inserter = new Inserter(sc);
     }
 
     public int selectOption() throws InvalidOptionException {
@@ -89,10 +84,11 @@ public class MainLoop {
         System.out.println(helloMessage);
 
         registerMenuItems();
+        String prompt = menu.buildMenuPrompt();
 
         while (true) {
             try{
-                System.out.println(menu.display());
+                System.out.println(prompt);
 
                 int userSelect = selectOption();
 
