@@ -10,9 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class PlantDaoImpl implements Dao<Plant> {
+public class PlantDaoImpl implements PlantDao {
     @Override
-    public ArrayList<Plant> getAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
+    public ArrayList<Plant> findAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
         ArrayList<Plant> plants = new ArrayList<>();
         DatabaseConnection conn = new DatabaseConnection();
         conn.connect();
@@ -48,7 +48,22 @@ public class PlantDaoImpl implements Dao<Plant> {
     }
 
     @Override
+    public Plant find(int id) {
+        return null;
+    }
+
+    @Override
     public void insert(Plant item) {
+
+    }
+
+    @Override
+    public void update(Plant item) {
+
+    }
+
+    @Override
+    public void delete(int id) {
 
     }
 }

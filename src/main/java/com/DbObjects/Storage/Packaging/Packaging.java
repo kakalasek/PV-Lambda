@@ -4,10 +4,12 @@ import java.sql.Date;
 
 public class Packaging {
 
+    private int id;
     private Date expirationDate;
     private int numberOfSeeds;
 
-    public Packaging(Date expirationDate, int numberOfSeeds){
+    public Packaging(int id, Date expirationDate, int numberOfSeeds){
+        this.id = id;
         this.expirationDate = expirationDate;
         this.numberOfSeeds = numberOfSeeds;
     }

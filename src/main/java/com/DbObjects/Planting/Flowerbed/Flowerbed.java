@@ -2,10 +2,12 @@ package com.DbObjects.Planting.Flowerbed;
 
 public class Flowerbed {
 
+    private int id;
     private double size;
     private int number;
 
-    public Flowerbed(double size, int number){
+    public Flowerbed(int id, double size, int number){
+        this.id = id;
         this.size = size;
         this.number = number;
     }

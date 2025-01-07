@@ -7,13 +7,15 @@ import java.sql.Date;
 
 public class Planting {
 
+    private int id;
     private Date dateFrom;
     private Date dateTo;
     private int numberOfSeeds;
     private Flowerbed flowerbed;
     private Plant plant;
 
-    public Planting(Date dateFrom, Date dateTo, int numberOfSeeds, Flowerbed flowerbed, Plant plant){
+    public Planting(int id, Date dateFrom, Date dateTo, int numberOfSeeds, Flowerbed flowerbed, Plant plant){
+        this.id = id;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.numberOfSeeds = numberOfSeeds;

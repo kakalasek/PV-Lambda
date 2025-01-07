@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class StorageRecordDaoImpl implements StorageRecordDao {
     @Override
-    public ArrayList<StorageRecord> getAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
+    public ArrayList<StorageRecord> findAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
         ArrayList<StorageRecord> storageRecords = new ArrayList<>();
         DatabaseConnection conn = new DatabaseConnection();
         conn.connect();
@@ -49,6 +49,11 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
         conn.close();
 
         return storageRecords;
+    }
+
+    @Override
+    public StorageRecord find(int id) {
+        return null;
     }
 
     @Override
@@ -99,6 +104,16 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
         }
 
         conn.close();
+    }
+
+    @Override
+    public void update(StorageRecord item) {
+
+    }
+
+    @Override
+    public void delete(int id) {
+
     }
 
     @Override

@@ -4,9 +4,11 @@ import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.LoadingPropertiesException;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public interface Dao<T> {
-    ArrayList<T> getAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException;
+
+    T find(int id);
     void insert(T item) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException;
+    void update(T item);
+    void delete(int id);
 }

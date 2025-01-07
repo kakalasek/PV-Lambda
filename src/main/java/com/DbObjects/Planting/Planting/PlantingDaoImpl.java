@@ -13,9 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Date;
 
-public class PlantingDaoImpl implements Dao<Planting> {
+public class PlantingDaoImpl implements PlantingDao {
     @Override
-    public ArrayList<Planting> getAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
+    public ArrayList<Planting> findAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
         ArrayList<Planting> plantings = new ArrayList<>();
         DatabaseConnection conn = new DatabaseConnection();
         conn.connect();
@@ -58,6 +58,11 @@ public class PlantingDaoImpl implements Dao<Planting> {
         conn.close();
 
         return plantings;
+    }
+
+    @Override
+    public Planting find(int id) {
+        return null;
     }
 
     @Override
@@ -107,5 +112,15 @@ public class PlantingDaoImpl implements Dao<Planting> {
         }
 
         conn.close();
+    }
+
+    @Override
+    public void update(Planting item) {
+
+    }
+
+    @Override
+    public void delete(int id) {
+
     }
 }

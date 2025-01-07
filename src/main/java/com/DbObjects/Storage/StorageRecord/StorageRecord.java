@@ -5,10 +5,12 @@ import com.DbObjects.Storage.Packaging.Packaging;
 
 public class StorageRecord {
 
+    private int id;
     private Packaging packaging;
     private Plant plant;
 
-    public StorageRecord(Packaging packaging, Plant plant){
+    public StorageRecord(int id, Packaging packaging, Plant plant){
+        this.id = id;
         this.packaging = packaging;
         this.plant = plant;
     }

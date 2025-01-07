@@ -4,9 +4,20 @@ import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.InvalidOptionException;
 import com.CustomExceptions.LoadingPropertiesException;
 import com.CustomExceptions.NumberNotWithinOptionsException;
+import com.MainLoop.ChangeIsolationLevel.ChangeIsolationLevelCommand;
+import com.MainLoop.Delete.DeleteStorageRecordCommand;
+import com.MainLoop.Examples.NonRepeatableReadExampleCommand;
+import com.MainLoop.Examples.PhantomReadExampleCommand;
+import com.MainLoop.GenerateReport.GenerateReportCommand;
+import com.MainLoop.ImportFromFile.ImportFromCsvCommand;
+import com.MainLoop.Insert.InsertPlantingCommand;
+import com.MainLoop.Insert.InsertStorageRecordCommand;
 import com.MainLoop.Insert.Inserter;
 import com.MainLoop.Menu.Menu;
+import com.MainLoop.Select.SelectPlantingsCommand;
+import com.MainLoop.Select.SelectStorageRecordsCommand;
 import com.MainLoop.Select.Selector;
+import com.MainLoop.Update.LiquidatePlantCommand;
 import com.utils.InputChecker.InputChecker;
 
 import java.sql.SQLException;
@@ -67,17 +78,17 @@ public class MainLoop {
     }
 
     private void registerMenuItems(){
-        menu.registerItem("Add Seeds To Storage", new NotImplementedCommand());
-        menu.registerItem("Plant Seeds", new NotImplementedCommand());
-        menu.registerItem("Remove Seeds From Storage", new NotImplementedCommand());
-        menu.registerItem("Liquidate Plants", new NotImplementedCommand());
-        menu.registerItem("Show Stored Seeds", new NotImplementedCommand());
-        menu.registerItem("Show Plantings", new NotImplementedCommand());
-        menu.registerItem("Change DB Isolation Level", new NotImplementedCommand());
-        menu.registerItem("Generate Report", new NotImplementedCommand());
-        menu.registerItem("Import Plants From File", new NotImplementedCommand());
-        menu.registerItem("Non-Repeatable Read", new NotImplementedCommand());
-        menu.registerItem("Phantom Read", new NotImplementedCommand());
+        menu.registerItem("Add Seeds To Storage", new InsertStorageRecordCommand());
+        menu.registerItem("Plant Seeds", new InsertPlantingCommand());
+        menu.registerItem("Remove Seeds From Storage", new DeleteStorageRecordCommand());
+        menu.registerItem("Liquidate Plants", new LiquidatePlantCommand());
+        menu.registerItem("Show Stored Seeds", new SelectStorageRecordsCommand());
+        menu.registerItem("Show Plantings", new SelectPlantingsCommand());
+        menu.registerItem("Change DB Isolation Level", new ChangeIsolationLevelCommand());
+        menu.registerItem("Generate Report", new GenerateReportCommand());
+        menu.registerItem("Import Plants From File", new ImportFromCsvCommand());
+        menu.registerItem("Non-Repeatable Read", new NonRepeatableReadExampleCommand());
+        menu.registerItem("Phantom Read", new PhantomReadExampleCommand());
     }
 
     public void startLoop(){
@@ -96,7 +107,7 @@ public class MainLoop {
 
                 menu.selectItem(userSelect);
 
-            } catch (InvalidOptionException |NumberNotWithinOptionsException e){
+            } catch (InvalidOptionException | NumberNotWithinOptionsException e){
                 System.out.println(e.getMessage());
             }
         }
