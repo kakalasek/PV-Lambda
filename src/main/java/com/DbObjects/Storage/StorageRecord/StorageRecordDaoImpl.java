@@ -124,7 +124,24 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
 
     @Override
     public void delete(int id) {
+        try{
+            DatabaseConnection conn = new DatabaseConnection();
 
+            String sqlDelete = " BEGIN TRANSACTION; " +
+                    "DELETE FROM Packaging WHERE id = (SElECT packaging_id FROM Storage WHERE id = ?); " +
+                    "DELETE FROM Storage WHERE id = ?;";
+
+            try(PreparedStatement psDelete = conn.getConnection().prepareStatement(sqlDelete)){
+                psDelete.setInt(1, id);
+                psDelete.setInt(2, id);
+
+                // TODO delete
+            }
+
+           conn.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -134,9 +151,6 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
             conn.connect();
 
             String sqlUpdateNumberOfSeeds = "CALL plant_seeds(?, ?);";
-
-            System.out.println(storageRecord.getPackaging().getId());
-            System.out.println(newNumberOfSeeds);
 
             try (PreparedStatement psUpdateNumberOfSeeds = conn.getConnection().prepareStatement(sqlUpdateNumberOfSeeds)) {
                 psUpdateNumberOfSeeds.setInt(1, storageRecord.getPackaging().getId());

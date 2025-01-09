@@ -1,10 +1,5 @@
 package com.DbObjects;
 
-import com.CustomExceptions.CouldNotEstablishConnectionException;
-import com.CustomExceptions.LoadingPropertiesException;
-
-import java.sql.SQLException;
-
 public interface Dao<T> {
 
     T find(int id);

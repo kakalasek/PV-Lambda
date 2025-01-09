@@ -36,6 +36,10 @@ public class Packaging {
         return id;
     }
 
+    public void setId(int id){
+        this.id = id;
+    }
+
     public String toString(){
         return (expirationDate != null ? expirationDate : "Unknown") + ", " +
                 (numberOfSeeds != 0 ? numberOfSeeds : "Unknown");

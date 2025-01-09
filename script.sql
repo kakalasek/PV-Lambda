@@ -43,7 +43,7 @@ CREATE TABLE Packaging(
 CREATE TABLE Storage(
 	id INT NOT NULL AUTO_INCREMENT,
 	plant_id INT NOT NULL,
-	packaging_id INT NOT NULL,
+	packaging_id INT NOT NULL UNIQUE,
 	CONSTRAINT PK_Storage PRIMARY KEY (id),
 	CONSTRAINT FK_Storage_Plant FOREIGN KEY (plant_id) REFERENCES Plant(id),
 	CONSTRAINT FK_Storage_Packaging FOREIGN KEY (packaging_id) REFERENCES Packaging(id)

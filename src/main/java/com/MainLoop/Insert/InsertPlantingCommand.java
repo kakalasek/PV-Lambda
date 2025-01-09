@@ -7,6 +7,9 @@ import com.DbObjects.Planting.Flowerbed.Flowerbed;
 import com.DbObjects.Planting.Flowerbed.FlowerbedDaoImpl;
 import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
+import com.DbObjects.Storage.Packaging.Packaging;
+import com.DbObjects.Storage.Packaging.PackagingDao;
+import com.DbObjects.Storage.Packaging.PackagingDaoImpl;
 import com.DbObjects.Storage.StorageRecord.StorageRecord;
 import com.DbObjects.Storage.StorageRecord.StorageRecordDaoImpl;
 import com.MainLoop.Command;
@@ -23,6 +26,7 @@ public class InsertPlantingCommand implements Command {
     FlowerbedDaoImpl flowerbedDao = new FlowerbedDaoImpl();
     PlantingDaoImpl plantingDao = new PlantingDaoImpl();
     PlantDaoImpl plantDao = new PlantDaoImpl();
+    PackagingDaoImpl packagingDao = new PackagingDaoImpl();
 
     @Override
     public void execute() {
@@ -50,7 +54,7 @@ public class InsertPlantingCommand implements Command {
 
             StorageRecord storageRecord = storageRecords.get(seedsPick);
 
-            // TODO create a way to get id of packaging
+            storageRecord.getPackaging().setId(packagingDao.findByStorageRecordId(storageRecord.getId()).getId());
 
             storageRecord.getPlant().setId(plantDao.findByName(storageRecord.getPlant().getName()).getId());
 
