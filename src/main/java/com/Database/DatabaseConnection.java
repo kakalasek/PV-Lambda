@@ -20,6 +20,7 @@ public class DatabaseConnection {
     private final String username;
     private final String password;
     private Connection connection;
+    private static int transactionIsolationLevel = Connection.TRANSACTION_REPEATABLE_READ;
 
     /**
      * Creates the connection using data from config.properties file.
@@ -57,7 +58,10 @@ public class DatabaseConnection {
      */
     public void connect() {
         try {
-            if (connection == null) connection = DriverManager.getConnection(url, username, password);
+            if (connection == null){
+                connection = DriverManager.getConnection(url, username, password);
+                connection.setTransactionIsolation(transactionIsolationLevel);
+            }
         } catch (SQLException e){
             throw new RuntimeException("There has been a problem connecting to the database", e);
         }
@@ -66,7 +70,6 @@ public class DatabaseConnection {
     /**
      * Closes and active connection which was established for this DatabaseConnection object
      * @throws CouldNotEstablishConnectionException Gets thrown no active connection has been established for this DatabaseConnection object
-     * @throws SQLException If anything goes wrong with closing the connection
      */
     public void close() {
         try {
@@ -76,5 +79,9 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             throw new RuntimeException("There has been a problem closing your connection", e);
         }
+    }
+
+    public static void setTransactionIsolationLevel(int isolationLevel){
+        transactionIsolationLevel = isolationLevel;
     }
 }
