@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public interface Dao<T> {
 
     T find(int id);
-    void insert(T item) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException;
+    void insert(T item);
     void update(T item);
     void delete(int id);
 }

@@ -12,12 +12,26 @@ public class Flowerbed {
         this.number = number;
     }
 
+    public Flowerbed(double size, int number){
+        this.id = 0;
+        this.size = size;
+        this.number = number;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public double getSize() {
         return size;
     }
 
     public int getNumber() {
         return number;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String toString(){

@@ -23,6 +23,19 @@ public class Planting {
         this.plant = plant;
     }
 
+    public Planting(Date dateFrom, Date dateTo, int numberOfSeeds, Flowerbed flowerbed, Plant plant){
+        this.id = 0;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.numberOfSeeds = numberOfSeeds;
+        this.flowerbed = flowerbed;
+        this.plant = plant;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public Date getDateFrom() {
         return dateFrom;
     }
@@ -43,9 +56,13 @@ public class Planting {
         return plant;
     }
 
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
+    }
+
     public String toString(){
         return (dateFrom != null ? dateFrom : "Unknown") + ", " +
-                (dateTo != null ? dateFrom : "Still Planted") + ", " +
+                (dateTo != null ? dateTo : "Still Planted") + ", " +
                 (numberOfSeeds != 0 ? numberOfSeeds : "Unknown") + ", " +
                 flowerbed.toString() + ", " + plant.toString();
     }

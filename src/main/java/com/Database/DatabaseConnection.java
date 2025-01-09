@@ -25,7 +25,7 @@ public class DatabaseConnection {
      * Creates the connection using data from config.properties file.
      * @throws LoadingPropertiesException Gets thrown if any problem occurs when trying to read the properties file.
      */
-    public DatabaseConnection() throws LoadingPropertiesException {
+    public DatabaseConnection(){
         try{
             Properties prop = new Properties();
 
@@ -47,17 +47,20 @@ public class DatabaseConnection {
      * @return The Connection object
      * @throws CouldNotEstablishConnectionException Gets thrown if no active connection has been established for this DatabaseConnection object
      */
-    public Connection getConnection() throws CouldNotEstablishConnectionException {
+    public Connection getConnection(){
         if (connection == null) throw new CouldNotEstablishConnectionException("No connection was established for this session");
         return connection;
     }
 
     /**
      * Creates an active connection for this DatabaseConnection object
-     * @throws SQLException If anything goes wrong with creating the connection
      */
-    public void connect() throws SQLException {
-        if(connection == null) connection = DriverManager.getConnection(url, username, password);
+    public void connect() {
+        try {
+            if (connection == null) connection = DriverManager.getConnection(url, username, password);
+        } catch (SQLException e){
+            throw new RuntimeException("There has been a problem connecting to the database", e);
+        }
     }
 
     /**
@@ -65,9 +68,13 @@ public class DatabaseConnection {
      * @throws CouldNotEstablishConnectionException Gets thrown no active connection has been established for this DatabaseConnection object
      * @throws SQLException If anything goes wrong with closing the connection
      */
-    public void close() throws CouldNotEstablishConnectionException, SQLException {
-        if (connection == null) throw new CouldNotEstablishConnectionException("No connection was established for this session");
-        connection.close();
+    public void close() {
+        try {
+            if (connection == null)
+                throw new CouldNotEstablishConnectionException("No connection was established for this session");
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException("There has been a problem closing your connection", e);
+        }
     }
-
 }

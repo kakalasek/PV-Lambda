@@ -12,7 +12,7 @@ public class PackagingDaoImpl implements PackagingDao{
     }
 
     @Override
-    public void insert(Packaging item) throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
+    public void insert(Packaging item) {
 
     }
 

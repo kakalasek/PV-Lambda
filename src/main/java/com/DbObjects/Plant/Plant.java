@@ -9,6 +9,7 @@ public class Plant {
         Biennial
     }
 
+    private int id;
     private String name;
     private plantType lifeLength;
     private int growingTime;
@@ -17,7 +18,19 @@ public class Plant {
     private int plantingTime;
     private boolean pre_growing;
 
+    public Plant(int id, String name, plantType lifeLength, int growingTime, int spacing, int plantingDepth, int plantingTime, boolean pre_growing) {
+        this.id = id;
+        this.name = name;
+        this.lifeLength = lifeLength;
+        this.growingTime = growingTime;
+        this.spacing = spacing;
+        this.plantingDepth = plantingDepth;
+        this.plantingTime = plantingTime;
+        this.pre_growing = pre_growing;
+    }
+
     public Plant(String name, plantType lifeLength, int growingTime, int spacing, int plantingDepth, int plantingTime, boolean pre_growing) {
+        this.id = 0;
         this.name = name;
         this.lifeLength = lifeLength;
         this.growingTime = growingTime;
@@ -53,6 +66,14 @@ public class Plant {
 
     public boolean isPre_growing() {
         return pre_growing;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String toString(){

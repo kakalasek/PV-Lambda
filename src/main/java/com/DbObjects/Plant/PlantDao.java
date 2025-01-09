@@ -8,5 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface PlantDao extends Dao<Plant> {
-    ArrayList<Plant> findAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException;
+    ArrayList<Plant> findAll();
+    Plant findByName(String name);
 }

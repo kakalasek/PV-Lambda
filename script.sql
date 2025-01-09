@@ -51,16 +51,17 @@ CREATE TABLE Storage(
 
 CREATE VIEW Planted_plants
 AS 
-SELECT Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant, Plant.pre_growing AS Pre_Growing,
-Planting.date_from AS Date_Of_Planting, Planting.date_to AS Date_Of_Disposal, Planting.number_of_seeds AS Number_Of_Seeds, 
+SELECT Planting.id AS Planting_id, Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant, Plant.pre_growing AS Pre_Growing,
+Planting.date_from AS Date_Of_Planting, Planting.date_to AS Date_Of_Disposal, Planting.number_of_seeds AS Number_Of_Seeds,
 Flowerbed.number AS Flowerbed_Number, Flowerbed.size AS Flowerbed_Size
 FROM Planting
 INNER JOIN Plant ON Planting.plant_id = Plant.id
 INNER JOIN Flowerbed ON Planting.flowerbed_id = Flowerbed.id;
 
+
 CREATE VIEW Stored_plants
 AS
-SELECT Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant, Plant.pre_growing AS Pre_Growing,
+SELECT Storage.id AS Stored_Plant_id, Plant.name AS Plant_Name, Plant.life_length AS Life_Length, Plant.growing_time AS Time_To_Grow, Plant.spacing AS Spacing, Plant.planting_depth AS Depth_Of_Planting, Plant.planting_time AS Month_To_Plant, Plant.pre_growing AS Pre_Growing,
 Packaging.expiration_date AS Expiration_Date, Packaging.number_of_seeds AS Number_Of_Seeds_In_Package
 FROM Storage
 INNER JOIN Plant ON Storage.plant_id = Plant.id
@@ -72,10 +73,14 @@ CREATE PROCEDURE plant_seeds (IN var_id INT, IN var_number_of_seeds INT)
 
 BEGIN
 
-		UPDATE Packaging SET number_of_seeds = var_number_of_seeds WHERE id = var_id;
-
-		DELETE FROM Packaging
-		WHERE number_of_seeds <= 0;
+		IF var_number_of_seeds <= 0 THEN
+			DELETE FROM Storage
+			WHERE packaging_id = var_id;
+			DELETE FROM Packaging
+			WHERE id = var_id;
+		ELSE
+			UPDATE Packaging SET number_of_seeds = var_number_of_seeds WHERE id = var_id;
+		END IF;
 
 END; //
 

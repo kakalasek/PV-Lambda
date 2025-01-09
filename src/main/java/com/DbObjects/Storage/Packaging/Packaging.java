@@ -14,6 +14,12 @@ public class Packaging {
         this.numberOfSeeds = numberOfSeeds;
     }
 
+    public Packaging(Date expirationDate, int numberOfSeeds){
+        this.id = 0;
+        this.expirationDate = expirationDate;
+        this.numberOfSeeds = numberOfSeeds;
+    }
+
     public Date getExpirationDate() {
         return expirationDate;
     }
@@ -24,6 +30,10 @@ public class Packaging {
 
     public void setNumberOfSeeds(int numberOfSeeds){
         this.numberOfSeeds = numberOfSeeds;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String toString(){

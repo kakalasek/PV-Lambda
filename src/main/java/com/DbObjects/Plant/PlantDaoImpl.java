@@ -12,39 +12,87 @@ import java.util.ArrayList;
 
 public class PlantDaoImpl implements PlantDao {
     @Override
-    public ArrayList<Plant> findAll() throws LoadingPropertiesException, SQLException, CouldNotEstablishConnectionException {
-        ArrayList<Plant> plants = new ArrayList<>();
-        DatabaseConnection conn = new DatabaseConnection();
-        conn.connect();
+    public ArrayList<Plant> findAll(){
+        try {
+            ArrayList<Plant> plants = new ArrayList<>();
+            DatabaseConnection conn = new DatabaseConnection();
+            conn.connect();
 
-        String sqlSelectAll = "SELECT * FROM Plant;";
+            String sqlSelectAll = "SELECT * FROM Plant;";
 
-        try(PreparedStatement psSelectAll = conn.getConnection().prepareStatement(sqlSelectAll)){
-            ResultSet rs = psSelectAll.executeQuery();
+            try (PreparedStatement psSelectAll = conn.getConnection().prepareStatement(sqlSelectAll)) {
+                ResultSet rs = psSelectAll.executeQuery();
 
-            while(rs.next()){
-                String plantName = rs.getString("name");
-                Plant.plantType plantLifeLength = Plant.plantType.valueOf(rs.getString("life_length"));
-                int plantGrowingTime = rs.getInt("growing_time");
-                int plantSpacing = rs.getInt("spacing");
-                int plantPlantingDepth = rs.getInt("planting_depth");
-                int plantPlantingTime = rs.getInt("planting_time");
-                boolean plantPreGrowing = rs.getBoolean("pre_growing");
-                Plant plant = new Plant(plantName,
-                        plantLifeLength,
-                        plantGrowingTime,
-                        plantSpacing,
-                        plantPlantingDepth,
-                        plantPlantingTime,
-                        plantPreGrowing);
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String plantName = rs.getString("name");
+                    Plant.plantType plantLifeLength = Plant.plantType.valueOf(rs.getString("life_length"));
+                    int plantGrowingTime = rs.getInt("growing_time");
+                    int plantSpacing = rs.getInt("spacing");
+                    int plantPlantingDepth = rs.getInt("planting_depth");
+                    int plantPlantingTime = rs.getInt("planting_time");
+                    boolean plantPreGrowing = rs.getBoolean("pre_growing");
+                    Plant plant = new Plant(id ,plantName,
+                            plantLifeLength,
+                            plantGrowingTime,
+                            plantSpacing,
+                            plantPlantingDepth,
+                            plantPlantingTime,
+                            plantPreGrowing);
 
-                plants.add(plant);
+                    plants.add(plant);
+                }
             }
+
+            conn.close();
+
+            return plants;
+        } catch (SQLException e){
+            throw new RuntimeException("There has been a problem with executing your query");
         }
+    }
 
-        conn.close();
+    @Override
+    public Plant findByName(String name) {
+        try{
+            Plant plant = null;
+            DatabaseConnection conn = new DatabaseConnection();
+            conn.connect();
 
-        return plants;
+            String sqlSelectByName = "SELECT * FROM Plant WHERE name = ?;";
+
+            try(PreparedStatement psSelectByName = conn.getConnection().prepareStatement(sqlSelectByName)){
+                psSelectByName.setString(1, name);
+
+                ResultSet rs = psSelectByName.executeQuery();
+
+                if(rs.next()) {
+                    int id = rs.getInt("id");
+                    String plantName = rs.getString("name");
+                    Plant.plantType plantLifeLength = Plant.plantType.valueOf(rs.getString("life_length"));
+                    int plantGrowingTime = rs.getInt("growing_time");
+                    int plantSpacing = rs.getInt("spacing");
+                    int plantPlantingDepth = rs.getInt("planting_depth");
+                    int plantPlantingTime = rs.getInt("planting_time");
+                    boolean plantPreGrowing = rs.getBoolean("pre_growing");
+
+                    plant = new Plant(id ,plantName,
+                            plantLifeLength,
+                            plantGrowingTime,
+                            plantSpacing,
+                            plantPlantingDepth,
+                            plantPlantingTime,
+                            plantPreGrowing);
+
+                }
+            }
+
+            conn.close();
+
+            return plant;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

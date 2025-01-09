@@ -15,12 +15,22 @@ public class StorageRecord {
         this.plant = plant;
     }
 
+    public StorageRecord(Packaging packaging, Plant plant){
+        this.id = 0;
+        this.packaging = packaging;
+        this.plant = plant;
+    }
+
     public Packaging getPackaging() {
         return packaging;
     }
 
     public Plant getPlant() {
         return plant;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String toString(){

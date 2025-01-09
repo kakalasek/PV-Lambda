@@ -1,8 +1,6 @@
 package com.MainLoop;
 
-import com.CustomExceptions.CouldNotEstablishConnectionException;
 import com.CustomExceptions.InvalidOptionException;
-import com.CustomExceptions.LoadingPropertiesException;
 import com.CustomExceptions.NumberNotWithinOptionsException;
 import com.MainLoop.ChangeIsolationLevel.ChangeIsolationLevelCommand;
 import com.MainLoop.Delete.DeleteStorageRecordCommand;
@@ -12,16 +10,13 @@ import com.MainLoop.GenerateReport.GenerateReportCommand;
 import com.MainLoop.ImportFromFile.ImportFromCsvCommand;
 import com.MainLoop.Insert.InsertPlantingCommand;
 import com.MainLoop.Insert.InsertStorageRecordCommand;
-import com.MainLoop.Insert.Inserter;
 import com.MainLoop.Menu.Menu;
 import com.MainLoop.Select.SelectPlantingsCommand;
 import com.MainLoop.Select.SelectStorageRecordsCommand;
-import com.MainLoop.Select.Selector;
 import com.MainLoop.Update.LiquidatePlantCommand;
 import com.utils.InputChecker.InputChecker;
+import com.utils.ScannerWrapper.ScannerWrapper;
 
-import java.sql.SQLException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -63,7 +58,7 @@ public class MainLoop {
     private final Menu menu;
 
     public MainLoop(){
-        this.sc = new Scanner(System.in);
+        this.sc = ScannerWrapper.getScanner();
         this.menu = new Menu();
     }
 
@@ -111,5 +106,7 @@ public class MainLoop {
                 System.out.println(e.getMessage());
             }
         }
+
+        ScannerWrapper.closeScanner();
     }
 }
