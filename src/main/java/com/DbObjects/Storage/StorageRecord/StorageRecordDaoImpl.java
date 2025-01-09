@@ -126,16 +126,14 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
     public void delete(int id) {
         try{
             DatabaseConnection conn = new DatabaseConnection();
+            conn.connect();
 
-            String sqlDelete = " BEGIN TRANSACTION; " +
-                    "DELETE FROM Packaging WHERE id = (SElECT packaging_id FROM Storage WHERE id = ?); " +
-                    "DELETE FROM Storage WHERE id = ?;";
+            String sqlDelete = " CALL remove_seeds(?);";
 
             try(PreparedStatement psDelete = conn.getConnection().prepareStatement(sqlDelete)){
                 psDelete.setInt(1, id);
-                psDelete.setInt(2, id);
 
-                // TODO delete
+                psDelete.execute();
             }
 
            conn.close();

@@ -51,13 +51,11 @@ public class LiquidatePlantCommand implements Command {
                 return;
             }
 
-            planting.setDateTo(liquidationDate);
-
-            plantingDao.update(planting);
+            plantingDao.liquidatePlanting(planting.getId(), liquidationDate);
 
             System.out.println("Plant liquidated successfully");
         } catch (Exception e){
-            System.out.println("There has been an unexpected error");
+            e.printStackTrace();
         }
     }
 }

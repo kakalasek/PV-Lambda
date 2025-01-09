@@ -40,7 +40,7 @@ public class DeleteStorageRecordCommand implements Command {
 
             System.out.println("Storage record deleted successfully");
         } catch (Exception e){
-            System.out.println("There has been an unexpected error");
+            e.printStackTrace();
         }
     }
 }
