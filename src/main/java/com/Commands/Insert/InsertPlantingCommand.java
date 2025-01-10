@@ -1,18 +1,14 @@
-package com.MainLoop.Insert;
+package com.Commands.Insert;
 
-import com.CustomExceptions.CouldNotEstablishConnectionException;
-import com.CustomExceptions.LoadingPropertiesException;
 import com.DbObjects.Plant.PlantDaoImpl;
 import com.DbObjects.Planting.Flowerbed.Flowerbed;
 import com.DbObjects.Planting.Flowerbed.FlowerbedDaoImpl;
 import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
-import com.DbObjects.Storage.Packaging.Packaging;
-import com.DbObjects.Storage.Packaging.PackagingDao;
 import com.DbObjects.Storage.Packaging.PackagingDaoImpl;
 import com.DbObjects.Storage.StorageRecord.StorageRecord;
 import com.DbObjects.Storage.StorageRecord.StorageRecordDaoImpl;
-import com.MainLoop.Command;
+import com.Commands.Command;
 import com.utils.InputChecker.InputChecker;
 import com.utils.ScannerWrapper.ScannerWrapper;
 

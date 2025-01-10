@@ -1,8 +1,8 @@
-package com.MainLoop.Delete;
+package com.Commands.Delete;
 
 import com.DbObjects.Storage.StorageRecord.StorageRecord;
 import com.DbObjects.Storage.StorageRecord.StorageRecordDaoImpl;
-import com.MainLoop.Command;
+import com.Commands.Command;
 import com.utils.InputChecker.InputChecker;
 import com.utils.ScannerWrapper.ScannerWrapper;
 

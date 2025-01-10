@@ -1,6 +1,6 @@
-package com.MainLoop.ImportFromFile;
+package com.Commands.ImportFromFile;
 
-import com.MainLoop.Command;
+import com.Commands.Command;
 
 public class ImportFromCsvCommand implements Command {
     @Override

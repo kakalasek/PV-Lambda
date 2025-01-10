@@ -1,8 +1,8 @@
 package com.MainLoop.Menu;
 
-import com.CustomExceptions.NumberNotWithinOptionsException;
+import com.CustomExceptions.InvalidOptionException;
 import com.CustomExceptions.RowCharactersExceededException;
-import com.MainLoop.Command;
+import com.Commands.Command;
 import com.MainLoop.Menu.MenuItem.MenuItem;
 
 import java.util.ArrayList;
@@ -53,9 +53,9 @@ public class Menu {
         menuItems.add(new MenuItem(message, command));
     }
 
-    public void selectItem(int selectedItem) throws NumberNotWithinOptionsException {
+    public void selectItem(int selectedItem) throws InvalidOptionException {
         if(selectedItem > menuItems.size()){
-            throw new NumberNotWithinOptionsException("This number does not correspond to any menu item");
+            throw new InvalidOptionException("This number does not correspond to any menu item");
         }
         menuItems.get(selectedItem).executeCommand();
     }

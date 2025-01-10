@@ -1,12 +1,11 @@
-package com.MainLoop.ChangeIsolationLevel;
+package com.Commands.ChangeIsolationLevel;
 
 import com.Database.DatabaseConnection;
-import com.MainLoop.Command;
+import com.Commands.Command;
 import com.utils.InputChecker.InputChecker;
 import com.utils.ScannerWrapper.ScannerWrapper;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ChangeIsolationLevelCommand implements Command {

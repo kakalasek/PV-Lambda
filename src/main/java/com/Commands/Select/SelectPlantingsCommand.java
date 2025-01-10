@@ -1,8 +1,8 @@
-package com.MainLoop.Select;
+package com.Commands.Select;
 
 import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
-import com.MainLoop.Command;
+import com.Commands.Command;
 
 import java.util.ArrayList;
 

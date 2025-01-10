@@ -1,6 +1,6 @@
-package com.MainLoop.Examples;
+package com.Commands.Examples;
 
-import com.MainLoop.Command;
+import com.Commands.Command;
 
 public class PhantomReadExampleCommand implements Command {
     @Override

@@ -1,6 +1,6 @@
-package com.MainLoop;
+package com.Commands;
 
-public class NotImplementedCommand implements Command{
+public class NotImplementedCommand implements Command {
 
     @Override
     public void execute() {

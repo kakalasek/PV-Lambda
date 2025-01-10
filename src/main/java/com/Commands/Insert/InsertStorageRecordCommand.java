@@ -1,11 +1,11 @@
-package com.MainLoop.Insert;
+package com.Commands.Insert;
 
 import com.DbObjects.Plant.Plant;
 import com.DbObjects.Plant.PlantDaoImpl;
 import com.DbObjects.Storage.Packaging.Packaging;
 import com.DbObjects.Storage.StorageRecord.StorageRecord;
 import com.DbObjects.Storage.StorageRecord.StorageRecordDaoImpl;
-import com.MainLoop.Command;
+import com.Commands.Command;
 import com.utils.InputChecker.InputChecker;
 import com.utils.ScannerWrapper.ScannerWrapper;
 

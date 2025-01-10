@@ -1,9 +1,8 @@
-package com.MainLoop.Update;
+package com.Commands.Update;
 
-import com.DbObjects.Plant.Plant;
 import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
-import com.MainLoop.Command;
+import com.Commands.Command;
 import com.utils.InputChecker.InputChecker;
 import com.utils.ScannerWrapper.ScannerWrapper;
 

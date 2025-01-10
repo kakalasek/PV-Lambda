@@ -1,6 +1,6 @@
 package com.MainLoop.Menu.MenuItem;
 
-import com.MainLoop.Command;
+import com.Commands.Command;
 
 public class MenuItem {
 

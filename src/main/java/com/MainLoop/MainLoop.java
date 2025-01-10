@@ -1,19 +1,18 @@
 package com.MainLoop;
 
 import com.CustomExceptions.InvalidOptionException;
-import com.CustomExceptions.NumberNotWithinOptionsException;
-import com.MainLoop.ChangeIsolationLevel.ChangeIsolationLevelCommand;
-import com.MainLoop.Delete.DeleteStorageRecordCommand;
-import com.MainLoop.Examples.NonRepeatableReadExampleCommand;
-import com.MainLoop.Examples.PhantomReadExampleCommand;
-import com.MainLoop.GenerateReport.GenerateReportCommand;
-import com.MainLoop.ImportFromFile.ImportFromCsvCommand;
-import com.MainLoop.Insert.InsertPlantingCommand;
-import com.MainLoop.Insert.InsertStorageRecordCommand;
+import com.Commands.ChangeIsolationLevel.ChangeIsolationLevelCommand;
+import com.Commands.Delete.DeleteStorageRecordCommand;
+import com.Commands.Examples.NonRepeatableReadExampleCommand;
+import com.Commands.Examples.PhantomReadExampleCommand;
+import com.Commands.GenerateReport.GenerateReportCommand;
+import com.Commands.ImportFromFile.ImportFromCsvCommand;
+import com.Commands.Insert.InsertPlantingCommand;
+import com.Commands.Insert.InsertStorageRecordCommand;
 import com.MainLoop.Menu.Menu;
-import com.MainLoop.Select.SelectPlantingsCommand;
-import com.MainLoop.Select.SelectStorageRecordsCommand;
-import com.MainLoop.Update.LiquidatePlantCommand;
+import com.Commands.Select.SelectPlantingsCommand;
+import com.Commands.Select.SelectStorageRecordsCommand;
+import com.Commands.Update.LiquidatePlantCommand;
 import com.utils.InputChecker.InputChecker;
 import com.utils.ScannerWrapper.ScannerWrapper;
 
@@ -31,29 +30,6 @@ public class MainLoop {
             
             """;
 
-    private final String prompt = """
-           
-            +--------------------------------+
-            | Select one of these options    |
-            | ============================== |
-            | 1) Add Seeds To Storage        |
-            | 2) Remove Seeds From Storage   |
-            | 3) Plant Seeds                 |
-            | 4) Liquidate Plants            |
-            | 5) Show Stored Seeds           |
-            | 6) Show Plantings              |
-            | 7) Change Database Isolation   |
-            |    Level                       |
-            | 8) Non-Repeatable Read         |
-            |     Example                    |
-            | 9) Phantom Read Example        |
-            | 10) Generate Report            |
-            | 11) Import Plants from file    |
-            | 0) Exit                        |
-            +--------------------------------+
-            
-            """;
-
     private final Scanner sc;
     private final Menu menu;
 
@@ -62,6 +38,11 @@ public class MainLoop {
         this.menu = new Menu();
     }
 
+    /**
+     * This simple method verifies the input and checks for the 'end' word, if user wants to exit the program
+     * @return An integer form of the user option
+     * @throws InvalidOptionException If the options is invalid, e. i. it is not a number
+     */
     public int selectOption() throws InvalidOptionException {
         String userSelect = sc.nextLine();
 
@@ -72,6 +53,9 @@ public class MainLoop {
         return Integer.parseInt(userSelect);
     }
 
+    /**
+     * Is here to provide a single method, which registers all the menu items
+     */
     private void registerMenuItems(){
         menu.registerItem("Add Seeds To Storage", new InsertStorageRecordCommand());
         menu.registerItem("Plant Seeds", new InsertPlantingCommand());
@@ -86,6 +70,9 @@ public class MainLoop {
         menu.registerItem("Phantom Read", new PhantomReadExampleCommand());
     }
 
+    /**
+     * Does exactly what is says. Starts the event loop
+     */
     public void startLoop(){
         System.out.println(helloMessage);
 
@@ -102,7 +89,7 @@ public class MainLoop {
 
                 menu.selectItem(userSelect);
 
-            } catch (InvalidOptionException | NumberNotWithinOptionsException e){
+            } catch (InvalidOptionException e){
                 System.out.println(e.getMessage());
             }
         }
