@@ -85,3 +85,15 @@ BEGIN
 END; //
 
 DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE remove_seeds (IN var_id INT)
+BEGIN
+
+	DELETE FROM Storage WHERE id = var_id;
+	DELETE FROM Packaging WHERE id = (SELECT packaging_id FROM Storage WHERE id = var_id);
+
+END; //
+
+DELIMITER ;

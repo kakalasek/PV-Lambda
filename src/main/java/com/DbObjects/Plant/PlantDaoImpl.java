@@ -1,9 +1,6 @@
 package com.DbObjects.Plant;
 
-import com.CustomExceptions.CouldNotEstablishConnectionException;
-import com.CustomExceptions.LoadingPropertiesException;
 import com.Database.DatabaseConnection;
-import com.DbObjects.Dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
