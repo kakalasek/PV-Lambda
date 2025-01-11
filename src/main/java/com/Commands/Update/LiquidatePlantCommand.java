@@ -3,6 +3,7 @@ package com.Commands.Update;
 import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
 import com.Commands.Command;
+import com.utils.HandyTools.HandyTools;
 import com.utils.InputChecker.InputChecker;
 import com.utils.ScannerWrapper.ScannerWrapper;
 import de.vandermeer.asciitable.AsciiTable;
@@ -16,58 +17,38 @@ public class LiquidatePlantCommand implements Command {
 
     PlantingDaoImpl plantingDao = new PlantingDaoImpl();
 
+    private String generatePlantingTable(ArrayList<Planting> plantings){
+
+        AsciiTable table = new AsciiTable();
+        table.addRule();
+        table.addRow("Choice", "Date Of Plantings", "Number Of Seeds", "Flowerbed Number", "Plant Name");
+        table.addRule();
+
+        for (int i = 0; i < plantings.size(); i++){
+            Planting currentPlanting = plantings.get(i);
+            table.addRow(i, currentPlanting.getDateFrom(), currentPlanting.getNumberOfSeeds(), currentPlanting.getFlowerbed().getNumber(), currentPlanting.getPlant().getName());
+        }
+
+        table.addRule();
+
+        return table.render();
+    }
+
     @Override
     public void execute() {
         try{
             Scanner sc = ScannerWrapper.getScanner();
+
             ArrayList<Planting> plantings = plantingDao.findAllPlanted();
+            String renderedTable = generatePlantingTable(plantings);
 
-            AsciiTable table = new AsciiTable();
-            table.addRule();
-            table.addRow("Choice", "Date Of Plantings", "Number Of Seeds", "Flowerbed Number", "Plant Name");
-            table.addRule();
-
-            for (int i = 0; i < plantings.size(); i++){
-                Planting currentPlanting = plantings.get(i);
-                table.addRow(i, currentPlanting.getDateFrom(), currentPlanting.getNumberOfSeeds(), currentPlanting.getFlowerbed().getNumber(), currentPlanting.getPlant().getName());
-            }
-
-            table.addRule();
-
-            String renderedTable = table.render();
             System.out.println(renderedTable);
 
-            /*
-            System.out.println("Date Of Planting | Number Of Seeds | Flowerbed Number | Plant Name \n");
-            for (int i = 0; i < plantings.size(); i++){
-                System.out.println(i + " | " + plantings.get(i).getDateFrom() + ", " + plantings.get(i).getNumberOfSeeds() + ", " + plantings.get(i).getFlowerbed().getNumber() + ", " + plantings.get(i).getPlant().getName());
-            }
-             */
-
-            System.out.println("Choose a planting by its index");
-            String plantingPickString = sc.nextLine();
-            if (!InputChecker.isPositiveNumber(plantingPickString)){
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
-
-            int plantingPick = Integer.parseInt(plantingPickString);
-            if (plantingPick > plantings.size()) {
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
+            int plantingPick = HandyTools.chooseFromList("Choose a planting by its index", plantings);
 
             Planting planting = plantings.get(plantingPick);
 
-            Date liquidationDate;
-            System.out.println("Enter date of plant liquidation in this format: YYYY-MM-DD");
-            String dateString = sc.nextLine();
-            try {
-                liquidationDate = Date.valueOf(dateString);
-            } catch (IllegalArgumentException e) {
-                System.out.println("You have entered the liquidation date in an invalid format");
-                return;
-            }
+            Date liquidationDate = HandyTools.pickDate("liquidation date");
 
             plantingDao.liquidatePlanting(planting.getId(), liquidationDate);
 
