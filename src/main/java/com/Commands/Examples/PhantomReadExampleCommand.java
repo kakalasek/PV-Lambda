@@ -3,10 +3,7 @@ package com.Commands.Examples;
 import com.Commands.Command;
 import com.Database.DatabaseConnection;
 import com.DbObjects.Examples.ExamplesDaoImpl;
-import com.DbObjects.Plant.Plant;
-import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Storage.Packaging.Packaging;
-import com.DbObjects.Storage.StorageRecord.StorageRecord;
 import de.vandermeer.asciitable.AsciiTable;
 
 import java.sql.Connection;

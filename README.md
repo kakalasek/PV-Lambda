@@ -1,3 +1,9 @@
+---
+title: PV-Lambda
+author: Josef Vetrovsky
+---
+
+
 Context
 ===
 
@@ -11,7 +17,7 @@ Database Transactions
 
 A transaction is a set of commands, which starts with a special keyword and ends with one, usually the *commit* keyword. Database transactions ensure, that only valid data are written into the database. If any problem occurs during a transaction, all the commands the transaction executed can be rolled back.       
 Lets take a practical example. You send money from your bank account to a non-existent bank account. Lets suppose the program, which carries out money transaction, does not check, whether the account exists beforehand. The money are deducted from your account, then the program attempts to add them to the non-existent account. It of course runs into an error and needs to put things back to the state they were before and inform the client, that the account does not exist. If we did not have database transactions, we would have no practical way to revert the deduction of our money. Of course in this case we could just run a command, which will add the respective amount of money back to our account. But what if there are a lot more commands during this transaction? It would be very tidious and annoying to carry them out backwards manually. Thats exactly the reason we have database transactions. From the start of the transaction, the database keeps a log, in which we can find all the commands executed during this database transaction. If any problem arises in the process, we can call the *rollback* command, which will, with the help of the transaction log, automatically revert all the commands executed by this database transaction.              
-When we combine transactions with multisession environment, certain complications may arise. I will show you three most common ones, although we will look only at two of them in the code. After the examples, we will introduce a mechanism, which database engines employ against these complications.               
+When we combine transactions with multi session environment, certain complications may arise. I will show you three most common ones, although we will look only at two of them in the code. After the examples, we will introduce a mechanism, which database engines employ against these complications.               
 
 Dirty Read
 ---
