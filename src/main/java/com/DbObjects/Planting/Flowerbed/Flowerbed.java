@@ -34,8 +34,4 @@ public class Flowerbed {
         this.id = id;
     }
 
-    public String toString(){
-        return (size != 0.0 ? size + "m^2" : "Unknown") + ", " +
-                number;
-    }
 }

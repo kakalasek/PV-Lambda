@@ -2,7 +2,6 @@ package com.DbObjects.Storage.Packaging;
 
 import com.CustomExceptions.ConnectionException;
 import com.Database.DatabaseConnection;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -27,7 +26,24 @@ public class PackagingDaoImpl implements PackagingDao{
 
     @Override
     public void delete(int id) {
+        try{
+            DatabaseConnection conn = new DatabaseConnection();
+            conn.connect();
 
+            String sqlDelete = " CALL remove_seeds(?);";
+
+            try(PreparedStatement psDelete = conn.getConnection().prepareStatement(sqlDelete)){
+                psDelete.setInt(1, id);
+
+                psDelete.execute();
+            }
+
+            conn.close();
+        } catch (SQLException e){
+            throw new RuntimeException("There has been a problem deleting the storage record", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     /**

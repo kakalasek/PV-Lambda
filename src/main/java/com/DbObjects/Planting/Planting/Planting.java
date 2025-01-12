@@ -56,14 +56,4 @@ public class Planting {
         return plant;
     }
 
-    public void setDateTo(Date dateTo) {
-        this.dateTo = dateTo;
-    }
-
-    public String toString(){
-        return (dateFrom != null ? dateFrom : "Unknown") + ", " +
-                (dateTo != null ? dateTo : "Still Planted") + ", " +
-                (numberOfSeeds != 0 ? numberOfSeeds : "Unknown") + ", " +
-                flowerbed.toString() + ", " + plant.toString();
-    }
 }

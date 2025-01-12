@@ -135,7 +135,7 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
 
             String sqlInsertPackaging = "INSERT INTO Packaging(expiration_date, number_of_seeds) " +
                     "VALUES (?, ?);";
-            int packagingId = -1;
+            int packagingId = 0;
             Packaging packaging = item.getPackaging();
 
             try (PreparedStatement psInsertPackaging = conn.getConnection().prepareStatement(sqlInsertPackaging, Statement.RETURN_GENERATED_KEYS)) {

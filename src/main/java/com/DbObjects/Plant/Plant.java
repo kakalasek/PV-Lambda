@@ -75,14 +75,4 @@ public class Plant {
     public void setId(int id) {
         this.id = id;
     }
-
-    public String toString(){
-        return name + ", " +
-                lifeLength + ", " +
-                (growingTime != 0 ? growingTime + "days" : "Unknown") + ", " +
-                (spacing != 0 ? spacing + "cm" : "Unknown") + ", " +
-                (plantingDepth != 0 ?  plantingDepth + "cm" : "Unknown") + ", " +
-                (plantingTime != 0 ? plantingTime + "(month)" : "Unknown") + ", " +
-                (pre_growing ? "yes" : "no");
-    }
 }
