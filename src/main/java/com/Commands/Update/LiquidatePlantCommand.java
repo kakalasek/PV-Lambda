@@ -44,7 +44,7 @@ public class LiquidatePlantCommand implements Command {
 
             System.out.println(renderedTable);
 
-            int plantingPick = HandyTools.chooseFromList("Choose a planting by its index", plantings);
+            int plantingPick = HandyTools.chooseFromList("Choose a planting by its index", plantings.size());
 
             Planting planting = plantings.get(plantingPick);
 

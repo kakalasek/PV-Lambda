@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class HandyTools {
 
-    public static <T> int chooseFromList(String message, ArrayList<T> list) throws InvalidOptionException {
+    public static <T> int chooseFromList(String message, int numberOfItems) throws InvalidOptionException {
         Scanner sc = ScannerWrapper.getScanner();
         System.out.println(message);
         String pickString = sc.nextLine();
@@ -19,7 +19,7 @@ public class HandyTools {
         }
 
         int pick = Integer.parseInt(pickString);
-        if(pick > list.size()){
+        if(pick > numberOfItems){
             throw new InvalidOptionException("Your pick must be a number within the respective range");
         }
 

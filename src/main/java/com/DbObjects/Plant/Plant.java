@@ -64,7 +64,7 @@ public class Plant {
         return plantingTime;
     }
 
-    public boolean isPre_growing() {
+    public boolean needsPreGrowing() {
         return pre_growing;
     }
 
