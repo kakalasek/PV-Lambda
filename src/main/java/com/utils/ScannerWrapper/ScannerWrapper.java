@@ -3,12 +3,12 @@ package com.utils.ScannerWrapper;
 import java.util.Scanner;
 
 /**
- * This class provides one instance of the scanner object to the whole application.
+ * This class provides one instance of the scanner object for the whole application.
  * The Scanner uses the System.in stream
  */
 public class ScannerWrapper {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     /**
      * Simply returns the instance of the static Scanner object, which uses the System.in stream

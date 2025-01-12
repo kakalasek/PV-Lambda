@@ -5,16 +5,22 @@ import com.DbObjects.Planting.Flowerbed.Flowerbed;
 import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
 import com.Commands.Command;
-import com.DbObjects.Storage.Packaging.Packaging;
-import com.DbObjects.Storage.StorageRecord.StorageRecord;
 import de.vandermeer.asciitable.AsciiTable;
 
 import java.util.ArrayList;
 
+/**
+ * Command which displays all the plantings inside the database
+ */
 public class SelectPlantingsCommand implements Command {
 
     PlantingDaoImpl plantingDao = new PlantingDaoImpl();
 
+    /**
+     * Will generate a simple table of plantings
+     * @param plantings A list of plantings
+     * @return The rendered table string
+     */
     private String generatePlantingTable(ArrayList<Planting> plantings){
 
         AsciiTable table = new AsciiTable();
@@ -25,7 +31,8 @@ public class SelectPlantingsCommand implements Command {
         for (Planting planting : plantings){
             Flowerbed flowerbed = planting.getFlowerbed();
             Plant plant = planting.getPlant();
-            table.addRow(planting.getDateFrom(), planting.getDateTo(), planting.getNumberOfSeeds(), flowerbed.getNumber(), flowerbed.getSize(), plant.getName(), plant.getLifeLength(), plant.getGrowingTime(), plant.getSpacing(), plant.getPlantingDepth(), plant.getPlantingTime(), plant.needsPreGrowing());
+            String dateTo = planting.getDateTo() != null ? planting.getDateTo().toString() : "Still planted";
+            table.addRow(planting.getDateFrom(), dateTo, planting.getNumberOfSeeds(), flowerbed.getNumber(), flowerbed.getSize(), plant.getName(), plant.getLifeLength(), plant.getGrowingTime(), plant.getSpacing(), plant.getPlantingDepth(), plant.getPlantingTime(), plant.needsPreGrowing());
         }
 
         table.addRule();

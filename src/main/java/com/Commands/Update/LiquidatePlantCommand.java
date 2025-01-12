@@ -4,19 +4,23 @@ import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
 import com.Commands.Command;
 import com.utils.HandyTools.HandyTools;
-import com.utils.InputChecker.InputChecker;
-import com.utils.ScannerWrapper.ScannerWrapper;
 import de.vandermeer.asciitable.AsciiTable;
-import org.checkerframework.checker.units.qual.A;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Scanner;
 
+/**
+ * Command which lets the user liquidate a plant by adding a date of liquidation
+ */
 public class LiquidatePlantCommand implements Command {
 
     PlantingDaoImpl plantingDao = new PlantingDaoImpl();
 
+    /**
+     * Will generate a simple table plantings
+     * @param plantings A list of plantings
+     * @return The rendered string
+     */
     private String generatePlantingTable(ArrayList<Planting> plantings){
 
         AsciiTable table = new AsciiTable();
@@ -37,8 +41,6 @@ public class LiquidatePlantCommand implements Command {
     @Override
     public void execute() {
         try{
-            Scanner sc = ScannerWrapper.getScanner();
-
             ArrayList<Planting> plantings = plantingDao.findAllPlanted();
             String renderedTable = generatePlantingTable(plantings);
 

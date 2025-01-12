@@ -6,17 +6,43 @@ import com.DbObjects.Storage.Packaging.Packaging;
 import com.DbObjects.Storage.StorageRecord.StorageRecord;
 import com.DbObjects.Storage.StorageRecord.StorageRecordDaoImpl;
 import com.Commands.Command;
+import com.utils.HandyTools.HandyTools;
 import com.utils.InputChecker.InputChecker;
 import com.utils.ScannerWrapper.ScannerWrapper;
+import de.vandermeer.asciitable.AsciiTable;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Commands which lets the user insert a storage record into the database
+ */
 public class InsertStorageRecordCommand implements Command {
 
     private final PlantDaoImpl plantDao = new PlantDaoImpl();
     private final StorageRecordDaoImpl storageRecordDao = new StorageRecordDaoImpl();
+
+    /**
+     * Will generate a simple table of plants and their choice indexes
+     * @param plants A list of plants
+     * @return The rendered table string
+     */
+    private String generatePlantTable(ArrayList<Plant> plants){
+        AsciiTable table = new AsciiTable();
+        table.addRule();
+        table.addRow("Choice", "Plant Name");
+        table.addRule();
+
+        for (int i = 0; i < plants.size(); i++){
+            Plant currentPlant = plants.get(i);
+            table.addRow(i, currentPlant.getName());
+        }
+
+        table.addRule();
+
+        return table.render();
+    }
 
     @Override
     public void execute() {
@@ -24,34 +50,16 @@ public class InsertStorageRecordCommand implements Command {
             Scanner sc = ScannerWrapper.getScanner();
 
             ArrayList<Plant> plants = plantDao.findAll();
-            for (int i = 0; i < plants.size(); i++) {
-                System.out.println(i + " | " + plants.get(i).getName());
-            }
 
-            System.out.println("Choose a plant by its index");
-            String plantPickString = sc.nextLine();
-            if (!InputChecker.isPositiveNumber(plantPickString)){
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
+            String renderTable = generatePlantTable(plants);
 
-            int plantPick = Integer.parseInt(plantPickString);
-            if (plantPick > plants.size()) {
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
+            System.out.println(renderTable);
+
+            int plantPick = HandyTools.chooseFromList("Choose a plant by its index", plants.size());
 
             Plant plant = plants.get(plantPick);
 
-            Date expirationDate;
-            System.out.println("Enter date of package expiration in this format: YYYY-MM-DD");
-            String dateString = sc.nextLine();
-            try {
-                expirationDate = Date.valueOf(dateString);
-            } catch (IllegalArgumentException e) {
-                System.out.println("You have entered the expiration date in an invalid format");
-                return;
-            }
+            Date expirationDate = HandyTools.pickDate("expirationDate");
 
             System.out.println("Enter the number of seeds inside the package");
             String numberOfSeedsString = sc.nextLine();
@@ -69,7 +77,7 @@ public class InsertStorageRecordCommand implements Command {
 
             System.out.println("Storage record inserted successfully");
         } catch (Exception e){
-            System.out.println("There has been an unexpected problem");
+            System.out.println(e.getMessage());
         }
     }
 }

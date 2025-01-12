@@ -5,6 +5,9 @@ import com.Commands.Command;
 
 import java.sql.Connection;
 
+/**
+ * Command which provides a simple example of the Non-Repeatable read phenomena
+ */
 public class NonRepeatableReadExampleCommand implements Command {
     @Override
     public void execute() {

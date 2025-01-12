@@ -2,41 +2,56 @@ package com.Commands.ChangeIsolationLevel;
 
 import com.Database.DatabaseConnection;
 import com.Commands.Command;
-import com.utils.InputChecker.InputChecker;
-import com.utils.ScannerWrapper.ScannerWrapper;
+import com.utils.HandyTools.HandyTools;
+import de.vandermeer.asciitable.AsciiTable;
 
 import java.sql.Connection;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+/**
+ * Command which displays which lets the user change the database isolation level of created connection
+ * for this program session
+ */
 public class ChangeIsolationLevelCommand implements Command {
+
+    /**
+     * Will generate a simple table of database isolation levels and their choice indexes
+     * @param databaseIsolationLevels A list of database isolation level names
+     * @return The rendered table string
+     */
+    private String generateDatabaseIsolationTable(ArrayList<String> databaseIsolationLevels){
+
+        AsciiTable table = new AsciiTable();
+        table.addRule();
+        table.addRow("Choice", "Isolation Level");
+        table.addRule();
+
+        for (int i = 0; i < databaseIsolationLevels.size(); i++){
+            table.addRow(i, databaseIsolationLevels.get(i));
+        }
+
+        table.addRule();
+
+        return table.render();
+    }
+
     @Override
     public void execute() {
         try{
-            Scanner sc = ScannerWrapper.getScanner();
-
-            String[] databaseIsolationLevels = {"READ_UNCOMMITED", "READ_COMMITED", "REPEATABLE_READ", "SERIALIZABLE"};
+            ArrayList<String> databaseIsolationLevels = new ArrayList<>(Arrays.asList("READ_UNCOMMITED", "READ_COMMITED", "REPEATABLE_READ", "SERIALIZABLE"));
             int[] databaseIsolationLevelsValues = {Connection.TRANSACTION_READ_UNCOMMITTED, Connection.TRANSACTION_READ_COMMITTED, Connection.TRANSACTION_REPEATABLE_READ, Connection.TRANSACTION_SERIALIZABLE};
 
-            for(int i = 0; i < databaseIsolationLevels.length; i++){
-                System.out.println(i + " | " + databaseIsolationLevels[i]);
-            }
+            String renderedTable = generateDatabaseIsolationTable(databaseIsolationLevels);
 
-            System.out.println("Choose database isolation level by its index");
-            String isolationPickString = sc.nextLine();
-            if(!InputChecker.isPositiveNumber(isolationPickString)){
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
-            int isolationPick = Integer.parseInt(isolationPickString);
-            if(isolationPick > databaseIsolationLevels.length){
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
+            System.out.println(renderedTable);
 
-            DatabaseConnection.setTransactionIsolationLevel(databaseIsolationLevelsValues[isolationPick]);
+            int databaseIsolationLevelPick = HandyTools.chooseFromList("Choose database isolation level by its index", databaseIsolationLevels.size());
+
+            DatabaseConnection.setTransactionIsolationLevel(databaseIsolationLevelsValues[databaseIsolationLevelPick]);
 
         } catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

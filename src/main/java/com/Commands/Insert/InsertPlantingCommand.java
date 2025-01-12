@@ -1,21 +1,25 @@
 package com.Commands.Insert;
 
+import com.DbObjects.Plant.Plant;
 import com.DbObjects.Plant.PlantDaoImpl;
 import com.DbObjects.Planting.Flowerbed.Flowerbed;
 import com.DbObjects.Planting.Flowerbed.FlowerbedDaoImpl;
 import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
+import com.DbObjects.Storage.Packaging.Packaging;
 import com.DbObjects.Storage.Packaging.PackagingDaoImpl;
 import com.DbObjects.Storage.StorageRecord.StorageRecord;
 import com.DbObjects.Storage.StorageRecord.StorageRecordDaoImpl;
 import com.Commands.Command;
-import com.utils.InputChecker.InputChecker;
-import com.utils.ScannerWrapper.ScannerWrapper;
+import com.utils.HandyTools.HandyTools;
+import de.vandermeer.asciitable.AsciiTable;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Scanner;
 
+/**
+ * Command which lets the user insert a planting
+ */
 public class InsertPlantingCommand implements Command {
 
     StorageRecordDaoImpl storageRecordDao = new StorageRecordDaoImpl();
@@ -24,91 +28,100 @@ public class InsertPlantingCommand implements Command {
     PlantDaoImpl plantDao = new PlantDaoImpl();
     PackagingDaoImpl packagingDao = new PackagingDaoImpl();
 
+    /**
+     * Will generate a simple table of storage records and their choice indexes
+     * @param storageRecords A list of storage records
+     * @return The rendered table string
+     */
+    private String generateStorageRecordTable(ArrayList<StorageRecord> storageRecords){
+
+        AsciiTable table = new AsciiTable();
+        table.addRule();
+        table.addRow("Choice", "Plant Name", "Expiration Date", "Number Of Seeds");
+        table.addRule();
+
+        for (int i = 0; i < storageRecords.size(); i++){
+            Packaging packaging = storageRecords.get(i).getPackaging();
+            Plant plant = storageRecords.get(i).getPlant();
+            table.addRow(i, plant.getName(), packaging.getExpirationDate(), packaging.getNumberOfSeeds());
+        }
+
+        table.addRule();
+
+        return table.render();
+    }
+
+    /**
+     * Will generate a simple table of flowerbeds and their choice indexes
+     * @param flowerbeds A list of flowerbeds
+     * @return The rendered table string
+     */
+    private String generateFlowerbedTable(ArrayList<Flowerbed> flowerbeds){
+
+        AsciiTable table = new AsciiTable();
+        table.addRule();
+        table.addRow("Choice", "Number", "Size m^2", "Number Of Seeds");
+        table.addRule();
+
+        for (int i = 0; i < flowerbeds.size(); i++){
+            Flowerbed currentFlowerbed = flowerbeds.get(i);
+            table.addRow(i, currentFlowerbed.getNumber(), currentFlowerbed.getSize());
+        }
+
+        table.addRule();
+
+        return table.render();
+    }
+
+
     @Override
     public void execute() {
         try{
-            Scanner sc = ScannerWrapper.getScanner();
-
             ArrayList<StorageRecord> storageRecords = storageRecordDao.findAll();
-            for(int i = 0; i < storageRecords.size(); i++){
-                StorageRecord storageRecord = storageRecords.get(i);
-                System.out.println(i + " | " + storageRecord.getPlant().getName() + ", " + storageRecord.getPackaging().getExpirationDate() + ", " + storageRecord.getPackaging().getNumberOfSeeds());
-            }
 
+            String renderedTable = generateStorageRecordTable(storageRecords);
 
-            System.out.println("Choose seeds by their index");
-            String seedsPickString = sc.nextLine();
-            if(!InputChecker.isPositiveNumber(seedsPickString)){
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
-            int seedsPick = Integer.parseInt(seedsPickString);
-            if(seedsPick > storageRecords.size()){
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
+            System.out.println(renderedTable);
 
-            StorageRecord storageRecord = storageRecords.get(seedsPick);
+            int storageRecordPick = HandyTools.chooseFromList("Choose seeds by their index", storageRecords.size());
 
-            storageRecord.getPackaging().setId(packagingDao.findByStorageRecordId(storageRecord.getId()).getId());
+            StorageRecord storageRecord = storageRecords.get(storageRecordPick);
+            int storageRecordId = storageRecord.getId();
 
-            storageRecord.getPlant().setId(plantDao.findByName(storageRecord.getPlant().getName()).getId());
+            Packaging packaging = storageRecord.getPackaging();
+            int packagingId = packagingDao.findByStorageRecordId(storageRecordId).getId();
+            packaging.setId(packagingId);
 
-            Date dateFrom;
-            System.out.println("Enter date of planting in this format: YYYY-MM-DD");
-            String dateString = sc.nextLine();
-            try {
-                dateFrom = Date.valueOf(dateString);
-            } catch (IllegalArgumentException e){
-                System.out.println("You have entered the date of planting in an invalid format");
-                return;
-            }
+            Plant plant = storageRecord.getPlant();
+            int plantId = plantDao.findByName(plant.getName()).getId();
+            plant.setId(plantId);
 
-            System.out.println("Enter the number of seeds you want to plant");
-            String numberOfSeedsString = sc.nextLine();
-            if(!InputChecker.isPositiveNumber(numberOfSeedsString)) {
-                System.out.println("The number of seeds has to be a number");
-                return;
-            }
-            int numberOfSeeds = Integer.parseInt(numberOfSeedsString);
-            if(numberOfSeeds > storageRecord.getPackaging().getNumberOfSeeds()) {
-                System.out.println("The number of seeds must be equal to or less than the number of seeds inside the chosen package");
-                return;
-            }
+            Date dateFrom = HandyTools.pickDate("planting date");
 
-            storageRecordDao.updateNumberOfSeeds(storageRecord, storageRecord.getPackaging().getNumberOfSeeds() - numberOfSeeds);
+            int numberOfSeedsToPlant = HandyTools.choosePositiveNumberWithLimit("Enter the number of seeds you want to plant",
+                    "The number of seeds has to be a number",
+                    "The number of seeds must be equal to or less than the number of seeds inside the chosen package",
+                    packaging.getNumberOfSeeds());
+
+            storageRecordDao.updateNumberOfSeeds(storageRecord, packaging.getNumberOfSeeds() - numberOfSeedsToPlant);
 
             ArrayList<Flowerbed> flowerbeds = flowerbedDao.findAll();
-            for(Flowerbed flowerbed : flowerbeds){
-                System.out.println(flowerbed.getNumber() + " | " + flowerbed.getSize() + "m^2");
-            }
 
-            System.out.println("Choose a flowerbed by its number");
-            String flowerbedPickString = sc.nextLine();
-            if(!InputChecker.isPositiveNumber(flowerbedPickString)){
-                System.out.println("Your pick must be a number within the respective range");
-                return;
-            }
+            renderedTable = generateFlowerbedTable(flowerbeds);
 
-            Flowerbed flowerbed = null;
-            int flowerbedPick = Integer.parseInt(flowerbedPickString);
-            for(Flowerbed flowerbedInsideLoop : flowerbeds){
-                if (flowerbedInsideLoop.getNumber() == flowerbedPick){
-                    flowerbed = flowerbedInsideLoop;
-                }
-            }
-            if(flowerbed == null){
-                System.out.println("Your pick must be a number of one of the flowerbeds");
-                return;
-            }
+            System.out.println(renderedTable);
 
-            Planting planting = new Planting(dateFrom, null, numberOfSeeds, flowerbed, storageRecord.getPlant());
+            int chosenFlowerbed = HandyTools.chooseFromList("Choose a flowerbed by its index", flowerbeds.size());
+
+            Flowerbed flowerbed = flowerbeds.get(chosenFlowerbed);
+
+            Planting planting = new Planting(dateFrom, null, numberOfSeedsToPlant, flowerbed, storageRecord.getPlant());
 
             plantingDao.insert(planting);
 
             System.out.println("Planting inserted successfully");
         } catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

@@ -9,10 +9,18 @@ import de.vandermeer.asciitable.AsciiTable;
 
 import java.util.ArrayList;
 
+/**
+ * Command which displays all the storage records inside the database
+ */
 public class SelectStorageRecordsCommand implements Command {
 
     StorageRecordDaoImpl storageRecordDao = new StorageRecordDaoImpl();
 
+    /**
+     * Will generate a simple table of storage records
+     * @param storageRecords A list of storage records
+     * @return The rendered table string
+     */
     private String generateStorageRecordTable(ArrayList<StorageRecord> storageRecords){
 
         AsciiTable table = new AsciiTable();
