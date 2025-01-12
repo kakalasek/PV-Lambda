@@ -63,6 +63,11 @@ What this program shows
 This program works with a simple database named *garden*. With the help of this database, it demostrates Non-Repeatable read and Phantom Read. It also has the option to change the isolation level of your database.           
 It uses a MariaDB database.
 
+
+
+
+
+
 Documentation
 ===
 
@@ -83,8 +88,8 @@ set up this database on your machine. Here is a good enough tutorial from Digita
 https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubuntu-20-04
 
 The process will be very similar on other distributions.         
-After that, you will need to create the database and tables. You will find all the tables, view, procedures and sample data
-in *script.sql* and *sample_date.sql* files, which are in the uppermost directory.
+After that you will need to import the database with some sample data. You can find the whole script, which was produced
+by mysqldump in the uppermost directory under the name *garden.sql*
 We will then need to create a new user for our database. This is also showed in the tutorial. It needs to have all
 privileges on the garden database.          
 After all that is done, you will need to make a copy of the *config_template.properties* file, which is in the
@@ -98,7 +103,71 @@ start the program with this command:
 java -jar PV-Lambda.jar 
 ```
 
-Note that this program uses java 21, so you should start it with a compatible version
+Note that this program uses java 21, so you should start it with a compatible version. It also does no support Windows, only Linux machines
+
+Operation Diagram
+===
+
+![Project Operation Diagram](ApplicationOperationDiagram.png)
+
+Program Architecture
+===
+
+![Program Architecture](ProgramArchitecture.png)
+
+Database Diagram
+===
+
+Tables
+---
+
+![Database Diagram](DatabaseDiagram.png)
+
+Views
+---
+
+![Views](Views.png)
+
+Import of Data
+===
+
+The program provides a way to input some data in a csv file. In the uppermost directory, there is an example
+csv file called *example_values.csv*. This file can demonstrate, which format of a csv file will the program
+accept. If your csv file will be different or one of the values will be invalid, the program will tell you,
+and it will not continue with the insert. Important thing to note however is, that if the problematic record
+is somewhere in the middle of the csv, all the records above could be inserted without a problem.
+
+Exceptions and Errors
+===
+
+This application deals with errors and exceptions in a simple way. It alerts the user, if something happened,
+in a textual way and lets them perform it again or fix the problem. There are not any significant errors that 
+need to be handled in a special way. The program is quite durable, it will not crash, even when the database 
+connection is not working. It is also very simple so no extensive error handling was really needed.             
+One thing that maybe should be mentioned is with the property file. If configured incorrectly, the program will tell you
+and nothing will work as intended. Pay really close attention to your username, password, database url and if your user
+really has all the rights for the database.
+
+Third Party Libraries
+===
+
+com.opencsv - opencsv - version 5.9           
+de.vandermeer - asciitable - version 0.3.2
+
+Resume
+===
+
+This project is supposed to demonstrate a simple application, which interacts with a database. It is also meant to
+show the concepts of **Non-Repeatable Read** and **Phantom Read**.              
+It uses a dynamically built menu, where each menu item performs an independent command.             
+In order to communicate with the database a sort of wrapper is used, called DatabaseConnection. An unlimited number
+of these connections can be created during the program. This can potentially present an issue, but in order to make
+the concepts examples work, it such a way. But note that if the programmer follows certain principles and always closes
+the connection after using it, this should not prove a problem.         
+In order to communicate with the database, this program will use several database access objects. They provide different
+methods used to interact with a certain table or view. The results of these queries often utilize or return objects,
+which have directly mapped attributes to the database tables. Except for foreign keys, they are represented by the
+referenced object itself.           
 
 Sources
 ===

@@ -103,8 +103,6 @@ public class InsertPlantingCommand implements Command {
                     "The number of seeds must be equal to or less than the number of seeds inside the chosen package",
                     packaging.getNumberOfSeeds());
 
-            storageRecordDao.updateNumberOfSeeds(storageRecord, packaging.getNumberOfSeeds() - numberOfSeedsToPlant);
-
             ArrayList<Flowerbed> flowerbeds = flowerbedDao.findAll();
 
             renderedTable = generateFlowerbedTable(flowerbeds);
@@ -117,6 +115,7 @@ public class InsertPlantingCommand implements Command {
 
             Planting planting = new Planting(dateFrom, null, numberOfSeedsToPlant, flowerbed, storageRecord.getPlant());
 
+            storageRecordDao.updateNumberOfSeeds(storageRecord, packaging.getNumberOfSeeds() - numberOfSeedsToPlant);
             plantingDao.insert(planting);
 
             System.out.println("Planting inserted successfully");
