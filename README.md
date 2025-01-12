@@ -1,8 +1,9 @@
 ---
 title: PV-Lambda
 author: Josef Vetrovsky
+date: 17. 1. 2025
+school: SPSE Jecna
 ---
-
 
 Context
 ===
@@ -16,7 +17,7 @@ Database Transactions
 ---
 
 A transaction is a set of commands, which starts with a special keyword and ends with one, usually the *commit* keyword. Database transactions ensure, that only valid data are written into the database. If any problem occurs during a transaction, all the commands the transaction executed can be rolled back.       
-Lets take a practical example. You send money from your bank account to a non-existent bank account. Lets suppose the program, which carries out money transaction, does not check, whether the account exists beforehand. The money are deducted from your account, then the program attempts to add them to the non-existent account. It of course runs into an error and needs to put things back to the state they were before and inform the client, that the account does not exist. If we did not have database transactions, we would have no practical way to revert the deduction of our money. Of course in this case we could just run a command, which will add the respective amount of money back to our account. But what if there are a lot more commands during this transaction? It would be very tidious and annoying to carry them out backwards manually. Thats exactly the reason we have database transactions. From the start of the transaction, the database keeps a log, in which we can find all the commands executed during this database transaction. If any problem arises in the process, we can call the *rollback* command, which will, with the help of the transaction log, automatically revert all the commands executed by this database transaction.              
+Let's take a practical example. You send money from your bank account to a non-existent bank account. Lets suppose the program, which carries out money transaction, does not check, whether the account exists beforehand. The money are deducted from your account, then the program attempts to add them to the non-existent account. It of course runs into an error and needs to put things back to the state they were before and inform the client, that the account does not exist. If we did not have database transactions, we would have no practical way to revert the deduction of our money. Of course in this case we could just run a command, which will add the respective amount of money back to our account. But what if there are a lot more commands during this transaction? It would be very tidious and annoying to carry them out backwards manually. Thats exactly the reason we have database transactions. From the start of the transaction, the database keeps a log, in which we can find all the commands executed during this database transaction. If any problem arises in the process, we can call the *rollback* command, which will, with the help of the transaction log, automatically revert all the commands executed by this database transaction.              
 When we combine transactions with multi session environment, certain complications may arise. I will show you three most common ones, although we will look only at two of them in the code. After the examples, we will introduce a mechanism, which database engines employ against these complications.               
 
 Dirty Read
@@ -65,9 +66,43 @@ It uses a MariaDB database.
 Documentation
 ===
 
+Setup
+---
+
+First clone the GitHub repo of this project using this command:
+
+```shell
+git clone <URL of this repo>
+```
+
+or you can download the zip file.
+
+Then you will need to configure your database. This project is meant to be used with MariaDB database. You will need to
+set up this database on your machine. Here is a good enough tutorial from DigitalOcean, even with creating a new user:        
+
+https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubuntu-20-04
+
+The process will be very similar on other distributions.         
+After that, you will need to create the database and tables. You will find all the tables, view, procedures and sample data
+in *script.sql* and *sample_date.sql* files, which are in the uppermost directory.
+We will then need to create a new user for our database. This is also showed in the tutorial. It needs to have all
+privileges on the garden database.          
+After all that is done, you will need to make a copy of the *config_template.properties* file, which is in the
+uppermost directory, and put it in the directory, where the .jar file resides (*/out/artifacts/PV_Lambda_jar/*). 
+Then you need to rename it to *config.properties*. According to the template values, rewrite them to values, which
+correspond to your database. If you installed your MariaDB locally, the template URL should work out of the box.            
+The last thing you need to do is start the program. Navigate yourself to the */out/artifacts/PV_Lambda_jar/* folder and
+start the program with this command:
+
+```shell
+java -jar PV-Lambda.jar 
+```
+
+Note that this program uses java 21, so you should start it with a compatible version
 
 Sources
 ===
 
 Nader Medhat - Understanding Database Isolation Levels - https://medium.com/nerd-for-tech/understanding-database-isolation-levels-c4ebcd55c6b9          
-Telusko - Java Database Connectivity | JDBC -https://youtu.be/7v2OnUti2eM?feature=shared 
+Telusko - Java Database Connectivity | JDBC - https://youtu.be/7v2OnUti2eM?feature=shared            
+Java Code Junkie - DAO For Beginners - https://www.youtube.com/watch?v=3J5L40MJfU4&list=PL3bGLnkkGnuX_Pa95v_FUdazcFhEF7iBi
