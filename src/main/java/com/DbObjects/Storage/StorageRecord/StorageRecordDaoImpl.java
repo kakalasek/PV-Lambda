@@ -1,5 +1,6 @@
 package com.DbObjects.Storage.StorageRecord;
 
+import com.CustomExceptions.ConnectionException;
 import com.Database.DatabaseConnection;
 import com.DbObjects.Plant.Plant;
 import com.DbObjects.Storage.Packaging.Packaging;
@@ -8,6 +9,13 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class StorageRecordDaoImpl implements StorageRecordDao {
+
+    /**
+     * Retrieves all storage records from the database.
+     * NOTE that this method uses a view in order to return all the storage records. This view does not contain
+     * ids of Packaging or Plant, so they will be set to 0 by default
+     * @return The ArrayList of storage records
+     */
     @Override
     public ArrayList<StorageRecord> findAll() {
         try {
@@ -51,7 +59,9 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
 
             return storageRecords;
         } catch (SQLException e) {
-            throw new RuntimeException("There has been a problem with your query");
+            throw new RuntimeException("There has been a problem returning all the storage records");
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -60,6 +70,10 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
         return null;
     }
 
+    /**
+     * Inserts a storage record into the database
+     * @param item The storage record item to be inserted
+     */
     @Override
     public void insert(StorageRecord item) {
         try {
@@ -110,8 +124,10 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
 
             conn.close();
 
-        } catch (Exception e){
-            throw new RuntimeException("There has been a problem with your query");
+        } catch (SQLException e){
+            throw new RuntimeException("There has been a problem with inserting the storage record", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -120,6 +136,10 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
 
     }
 
+    /**
+     * Deletes a storage item from the database based on its id
+     * @param id The id of the storage record you want to delete
+     */
     @Override
     public void delete(int id) {
         try{
@@ -136,10 +156,18 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
 
            conn.close();
         } catch (SQLException e){
-            throw new RuntimeException(e);
+            throw new RuntimeException("There has been a problem deleting the storage record", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
+    /**
+     * Updates the number of seeds in a storage record. It uses a procedure, which will delete the entire record, if the new number
+     * of seeds is 0
+     * @param storageRecord The storage record you want to update
+     * @param newNumberOfSeeds The new number of seeds
+     */
     @Override
     public void updateNumberOfSeeds(StorageRecord storageRecord, int newNumberOfSeeds) {
         try {
@@ -157,7 +185,9 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
 
             conn.close();
         } catch (SQLException e){
-            throw new RuntimeException("There has been a problem with your query");
+            throw new RuntimeException("There has been a problem when updating the number of seeds", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }

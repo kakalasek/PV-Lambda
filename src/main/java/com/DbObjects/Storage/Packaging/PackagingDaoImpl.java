@@ -1,6 +1,8 @@
 package com.DbObjects.Storage.Packaging;
 
+import com.CustomExceptions.ConnectionException;
 import com.Database.DatabaseConnection;
+import jdk.jshell.spi.ExecutionControl;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -28,6 +30,11 @@ public class PackagingDaoImpl implements PackagingDao{
 
     }
 
+    /**
+     * Finds a packaging by its storage records id. Since every packaging can be assigned only to one storage record, it just works
+     * @param id The id of some storage record
+     * @return The Packaging object with all of its attributes
+     */
     @Override
     public Packaging findByStorageRecordId(int id) {
         try{
@@ -58,7 +65,9 @@ public class PackagingDaoImpl implements PackagingDao{
 
             return packaging;
         } catch (SQLException e){
-            throw new RuntimeException(e);
+            throw new RuntimeException("There has been a problem find your packaging by the storage record id", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }

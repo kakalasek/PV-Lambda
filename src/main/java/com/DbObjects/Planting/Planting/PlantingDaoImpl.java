@@ -1,5 +1,6 @@
 package com.DbObjects.Planting.Planting;
 
+import com.CustomExceptions.ConnectionException;
 import com.Database.DatabaseConnection;
 import com.DbObjects.Plant.Plant;
 import com.DbObjects.Planting.Flowerbed.Flowerbed;
@@ -11,6 +12,13 @@ import java.util.ArrayList;
 import java.sql.Date;
 
 public class PlantingDaoImpl implements PlantingDao {
+
+    /**
+     * Retrieves all plantings from the database.
+     * NOTE that this method uses a view in order to return all the plantings. This view does not contain
+     * ids of Flowerbed or Plant, so they will be set to 0 by default
+     * @return The ArrayList of plantings
+     */
     @Override
     public ArrayList<Planting> findAll(){
         try {
@@ -58,10 +66,18 @@ public class PlantingDaoImpl implements PlantingDao {
 
             return plantings;
         } catch (SQLException e){
-            throw new RuntimeException("There has been a problem executing your query");
+            throw new RuntimeException("The has been a problem when selecting all the plantings from the database", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
+    /**
+     * Retrieves all plantings from the database, which were not yet liquidated.
+     * NOTE that this method uses a view in order to return all the plantings. This view does not contain
+     * ids of Flowerbed or Plant, so they will be set to 0 by default
+     * @return The ArrayList of plantings, which were not yet liquidated
+     */
     @Override
     public ArrayList<Planting> findAllPlanted() {
         try {
@@ -109,10 +125,17 @@ public class PlantingDaoImpl implements PlantingDao {
 
             return plantings;
         } catch (SQLException e){
-            throw new RuntimeException("There has been a problem executing your query");
+            throw new RuntimeException("There has been a problem selecting all the planted plants", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
+    /**
+     * Liquidates a plant by updating its dateTo column
+     * @param id The id of the Planting you want to liquidate
+     * @param liquidationDate The liquidation date
+     */
     @Override
     public void liquidatePlanting(int id, Date liquidationDate) {
         try {
@@ -131,7 +154,9 @@ public class PlantingDaoImpl implements PlantingDao {
             conn.close();
 
         } catch (SQLException e){
-            throw new RuntimeException("There has been a problem executing the query");
+            throw new RuntimeException("There has been a problem liquidating the planting", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -140,6 +165,10 @@ public class PlantingDaoImpl implements PlantingDao {
         return null;
     }
 
+    /**
+     * Inserts a new planting
+     * @param item The planting you want to insert
+     */
     @Override
     public void insert(Planting item){
         try {
@@ -162,7 +191,9 @@ public class PlantingDaoImpl implements PlantingDao {
             conn.close();
 
         } catch (SQLException e){
-            throw new RuntimeException("There has been a problem executing the query");
+            throw new RuntimeException("There has been a problem inserting the planting", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

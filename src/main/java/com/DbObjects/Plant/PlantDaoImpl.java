@@ -1,5 +1,6 @@
 package com.DbObjects.Plant;
 
+import com.CustomExceptions.ConnectionException;
 import com.Database.DatabaseConnection;
 
 import java.sql.PreparedStatement;
@@ -8,6 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PlantDaoImpl implements PlantDao {
+
+    /**
+     * Selects all plants from the database
+     * @return ArrayList of all the plants in the database
+     */
     @Override
     public ArrayList<Plant> findAll(){
         try {
@@ -45,10 +51,17 @@ public class PlantDaoImpl implements PlantDao {
 
             return plants;
         } catch (SQLException e){
-            throw new RuntimeException("There has been a problem with executing your query");
+            throw new RuntimeException("There has been a problem selecting all the plants", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
+    /**
+     * Selects a plant by its name
+     * @param name The name of the plant
+     * @return The Plant object with the provided name
+     */
     @Override
     public Plant findByName(String name) {
         try{
@@ -88,7 +101,7 @@ public class PlantDaoImpl implements PlantDao {
 
             return plant;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("There has been a problem selecting the plant by name", e);
         }
     }
 

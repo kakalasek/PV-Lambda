@@ -28,10 +28,6 @@ public class Packaging {
         return numberOfSeeds;
     }
 
-    public void setNumberOfSeeds(int numberOfSeeds){
-        this.numberOfSeeds = numberOfSeeds;
-    }
-
     public int getId() {
         return id;
     }
@@ -40,8 +36,4 @@ public class Packaging {
         this.id = id;
     }
 
-    public String toString(){
-        return (expirationDate != null ? expirationDate : "Unknown") + ", " +
-                (numberOfSeeds != 0 ? numberOfSeeds : "Unknown");
-    }
 }

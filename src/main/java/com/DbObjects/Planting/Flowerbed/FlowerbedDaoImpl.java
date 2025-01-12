@@ -1,5 +1,6 @@
 package com.DbObjects.Planting.Flowerbed;
 
+import com.CustomExceptions.ConnectionException;
 import com.Database.DatabaseConnection;
 
 import java.sql.PreparedStatement;
@@ -8,6 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FlowerbedDaoImpl implements FlowerbedDao {
+
+    /**
+     * Selects all flowerbeds from the database
+     * @return ArrayList of all the flowerbeds from the database
+     */
     @Override
     public ArrayList<Flowerbed> findAll() {
         try {
@@ -35,7 +41,9 @@ public class FlowerbedDaoImpl implements FlowerbedDao {
             return flowerbeds;
 
         } catch (SQLException e){
-            throw new RuntimeException("There has been a problem executing the select query", e);
+            throw new RuntimeException("There has been a problem selecting all the flowerbeds", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

@@ -33,7 +33,4 @@ public class StorageRecord {
         return id;
     }
 
-    public String toString(){
-        return packaging.toString() + ", " + plant.toString();
-    }
 }
