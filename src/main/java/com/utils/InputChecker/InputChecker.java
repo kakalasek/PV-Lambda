@@ -1,5 +1,11 @@
 package com.utils.InputChecker;
 
+import com.utils.FileUtils.FileUtils;
+
+import java.io.File;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
+
 /**
  * Provides methods for simple input checking, return true or false
  */
@@ -16,4 +22,16 @@ public class InputChecker {
         return input.matches(positiveNumberRegex);
     }
 
+    public static boolean isValidAbsoluteFilepath(String absoluteFilepath) {
+        try {
+            Paths.get(absoluteFilepath);
+
+            File f = new File(absoluteFilepath);
+
+            return f.exists() && !f.isDirectory();
+
+        } catch (InvalidPathException e){
+            return false;
+        }
+    }
 }

@@ -81,4 +81,15 @@ public class HandyTools {
 
         return pick;
     }
+
+    public static String chooseFile(String message) throws InvalidOptionException {
+        Scanner sc = ScannerWrapper.getScanner();
+
+        System.out.println(message);
+        String absoluteFilepath = sc.nextLine();
+
+        if(!InputChecker.isValidAbsoluteFilepath(absoluteFilepath)) throw new InvalidOptionException("Entered absolute file path is invalid");
+
+        return absoluteFilepath;
+    }
 }
