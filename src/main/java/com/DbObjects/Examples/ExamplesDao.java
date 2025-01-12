@@ -3,6 +3,7 @@ package com.DbObjects.Examples;
 import com.DbObjects.Storage.Packaging.Packaging;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  * This Database Access Object interface is meant specifically for methods
@@ -13,4 +14,5 @@ public interface ExamplesDao {
     void writeNumberOfSeedsInPackaging(int id, int newNumberOfSeeds, Connection connection);
     int insertPackagingAndRetrieveId(Packaging packaging, Connection connection);
     void deletePackaging(int id, Connection connection);
+    ArrayList<Packaging> readAllPackaging(Connection connection);
 }

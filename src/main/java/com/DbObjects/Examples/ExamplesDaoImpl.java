@@ -5,6 +5,7 @@ import com.Database.DatabaseConnection;
 import com.DbObjects.Storage.Packaging.Packaging;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * This DAO is a little special. It is supposed to by used by only the examples
@@ -123,5 +124,36 @@ public class ExamplesDaoImpl implements ExamplesDao{
         }
     }
 
+    /**
+     * Reads all packaging
+     * @param connection The connection to perform the query
+     * @return List of all the packaging
+     */
+    @Override
+    public ArrayList<Packaging> readAllPackaging(Connection connection) {
+        try{
+            ArrayList<Packaging> packaging = new ArrayList<>();
 
+            String sqlReadAll = "SELECT * FROM Packaging;";
+
+            try (PreparedStatement psReadAll = connection.prepareStatement(sqlReadAll)){
+                ResultSet rs = psReadAll.executeQuery();
+
+                while (rs.next()) {
+                    int packagingId = rs.getInt("id");
+                    Date expirationDate = rs.getDate("expiration_date");
+                    int numberOfSeeds = rs.getInt("number_of_seeds");
+
+                    packaging.add(new Packaging(packagingId, expirationDate, numberOfSeeds));
+                }
+
+            }
+
+            return packaging;
+        } catch (SQLException e){
+            throw new RuntimeException("There has been a problem reading all the packaging", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }
