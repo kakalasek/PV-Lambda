@@ -39,3 +39,6 @@ build/
 
 ### Configuration ###
 config.properties
+
+## Misc ##
+GardenReport.txt

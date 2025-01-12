@@ -65,6 +65,45 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
         }
     }
 
+    /**
+     * Selects the total number of stored seeds per plant
+     * @return A List of Lists containing two values, number of seeds and plant name, respectively
+     */
+    @Override
+    public ArrayList<ArrayList<String>> findNumberOfStoredSeedsPerPlant() {
+        try{
+            ArrayList<ArrayList<String>> totalNumberOfSeedsPerPlant = new ArrayList<>();
+            DatabaseConnection conn = new DatabaseConnection();
+            conn.connect();
+
+            String sqlSelectTotalNumberOfSeedsPerPlant = "SELECT SUM(Packaging.number_of_seeds) AS Total_Number_Of_Seeds, Plant.name AS Plant_Name FROM Storage INNER JOIN Packaging ON Storage.packaging_id = Packaging.id INNER JOIN Plant ON Storage.plant_id = Plant.id GROUP BY Plant.name";
+
+            try (PreparedStatement psSelectTotalNumberOfSeedsPerPlant = conn.getConnection().prepareStatement(sqlSelectTotalNumberOfSeedsPerPlant)) {
+                ResultSet rs = psSelectTotalNumberOfSeedsPerPlant.executeQuery();
+
+                while (rs.next()) {
+                    int totalNumberOfSeeds = rs.getInt("Total_Number_Of_Seeds");
+                    String plantName = rs.getString("Plant_Name");
+
+                    ArrayList<String> record = new ArrayList<>();
+                    record.add(String.valueOf(totalNumberOfSeeds));
+                    record.add(plantName);
+
+                    totalNumberOfSeedsPerPlant.add(record);
+                }
+            }
+
+            conn.close();
+
+            return totalNumberOfSeedsPerPlant;
+
+        } catch (SQLException e){
+            throw new RuntimeException("There has been a problem selecting the number of stored seeds per plant", e);
+        } catch (ConnectionException e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
     @Override
     public StorageRecord find(int id) {
         return null;
