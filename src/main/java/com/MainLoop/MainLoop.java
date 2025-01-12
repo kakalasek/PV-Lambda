@@ -1,12 +1,12 @@
 package com.MainLoop;
 
+import com.Commands.ImportFromFile.ImportStorageRecordsFromCsvCommand;
 import com.CustomExceptions.InvalidOptionException;
 import com.Commands.ChangeIsolationLevel.ChangeIsolationLevelCommand;
 import com.Commands.Delete.DeleteStorageRecordCommand;
 import com.Commands.Examples.NonRepeatableReadExampleCommand;
 import com.Commands.Examples.PhantomReadExampleCommand;
 import com.Commands.GenerateReport.GenerateReportCommand;
-import com.Commands.ImportFromFile.ImportFromCsvCommand;
 import com.Commands.Insert.InsertPlantingCommand;
 import com.Commands.Insert.InsertStorageRecordCommand;
 import com.MainLoop.Menu.Menu;
@@ -65,7 +65,7 @@ public class MainLoop {
         menu.registerItem("Show Plantings", new SelectPlantingsCommand());
         menu.registerItem("Change DB Isolation Level", new ChangeIsolationLevelCommand());
         menu.registerItem("Generate Report", new GenerateReportCommand());
-        menu.registerItem("Import Plants From File", new ImportFromCsvCommand());
+        menu.registerItem("Import Plants From File", new ImportStorageRecordsFromCsvCommand());
         menu.registerItem("Non-Repeatable Read", new NonRepeatableReadExampleCommand());
         menu.registerItem("Phantom Read", new PhantomReadExampleCommand());
     }

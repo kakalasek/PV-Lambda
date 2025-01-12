@@ -60,7 +60,7 @@ public class InsertPlantingCommand implements Command {
 
         AsciiTable table = new AsciiTable();
         table.addRule();
-        table.addRow("Choice", "Number", "Size m^2", "Number Of Seeds");
+        table.addRow("Choice", "Number", "Size m^2");
         table.addRule();
 
         for (int i = 0; i < flowerbeds.size(); i++){

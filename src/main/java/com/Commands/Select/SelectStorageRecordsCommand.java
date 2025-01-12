@@ -25,7 +25,7 @@ public class SelectStorageRecordsCommand implements Command {
 
         AsciiTable table = new AsciiTable();
         table.addRule();
-        table.addRow("Expiration Date", "Number Of Seeds", "Plant Name", "Life Length", "Growing Time", "Spacing", "Planting Depth", "Planting Time", "Pre Growing");
+        table.addRow("Expiration Date", "Number Of Seeds", "Plant Name", "Life Length", "Growing Time (day)", "Spacing cm", "Planting Depth cm", "Planting Time (month)", "Pre Growing");
         table.addRule();
 
         for (StorageRecord storageRecord : storageRecords){

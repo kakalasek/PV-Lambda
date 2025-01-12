@@ -25,7 +25,7 @@ public class SelectPlantingsCommand implements Command {
 
         AsciiTable table = new AsciiTable();
         table.addRule();
-        table.addRow("Date Of Planting","Date Of Liquidation", "Flowerbed Number", "Flowerbed Size", "Number Of Seeds", "Plant Name", "Life Length", "Growing Time", "Spacing", "Planting Depth", "Planting Time", "Pre Growing");
+        table.addRow("Date Of Planting", "Date Of Liquidation", "Number Of Seeds", "Flowerbed Number", "Flowerbed Size m^2", "Plant Name", "Life Length", "Growing Time (day)", "Spacing cm", "Planting Depth cm", "Planting Time (month)", "Pre Growing");
         table.addRule();
 
         for (Planting planting : plantings){

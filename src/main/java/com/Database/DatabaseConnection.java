@@ -96,13 +96,18 @@ public class DatabaseConnection {
      *                                        isolation level
      */
     public static void setTransactionIsolationLevel(int isolationLevel){
-        if (List.of(new int[]{Connection.TRANSACTION_READ_UNCOMMITTED,
-                Connection.TRANSACTION_READ_COMMITTED,
-                Connection.TRANSACTION_REPEATABLE_READ,
-                Connection.TRANSACTION_SERIALIZABLE}).contains(isolationLevel)){
-            transactionIsolationLevel = isolationLevel;
-    } else {
-            throw new InvalidIsolationLevelException("This isolation level does not exist");
+        boolean isAnIsolationLevel = false;
+        int[] isolationLevels = {Connection.TRANSACTION_READ_UNCOMMITTED,
+        Connection.TRANSACTION_READ_COMMITTED, Connection.TRANSACTION_REPEATABLE_READ, Connection.TRANSACTION_SERIALIZABLE};
+
+        for(int isolationLevelLocal : isolationLevels){
+            if (isolationLevelLocal == isolationLevel){
+                isAnIsolationLevel = true;
+                break;
+            }
         }
+
+        if (isAnIsolationLevel) transactionIsolationLevel = isolationLevel;
+        else throw new InvalidIsolationLevelException("This isolation level does not exist");
     }
 }
