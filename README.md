@@ -89,9 +89,20 @@ https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubunt
 
 The process will be very similar on other distributions.         
 After that you will need to import the database with some sample data. You can find the whole script, which was produced
-by mysqldump in the uppermost directory under the name *garden.sql*
-We will then need to create a new user for our database. This is also showed in the tutorial. It needs to have all
-privileges on the garden database.          
+by mysqldump in the uppermost directory under the name *garden.sql*. You can do this by this command:      
+
+```shell
+sudo mariadb < garden.sql
+```
+
+We will then need to create a new user for our database. In order for the views to work properly, we need to create a
+user named *gardenAdmin*. We can create him and grant him privileges like so:
+
+```sql
+CREATE USER 'gardenAdmin'@localhost IDENTIFIED BY 'admin';
+GRANT ALL PRIVILEGES ON garden.* TO 'gardenAdmin'@localhost IDENTIFIED BY 'admin';
+```
+
 After all that is done, you will need to make a copy of the *config_template.properties* file, which is in the
 uppermost directory, and put it in the directory, where the .jar file resides (*/out/artifacts/PV_Lambda_jar/*). 
 Then you need to rename it to *config.properties*. According to the template values, rewrite them to values, which
