@@ -26,8 +26,8 @@ public class PackagingDaoImpl implements PackagingDao{
 
     @Override
     public void delete(int id) {
+        DatabaseConnection conn = new DatabaseConnection();
         try{
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlDelete = " CALL remove_seeds(?);";
@@ -36,13 +36,16 @@ public class PackagingDaoImpl implements PackagingDao{
                 psDelete.setInt(1, id);
 
                 psDelete.execute();
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
-            conn.close();
         } catch (SQLException e){
             throw new RuntimeException("There has been a problem deleting the storage record", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
@@ -53,9 +56,9 @@ public class PackagingDaoImpl implements PackagingDao{
      */
     @Override
     public Packaging findByStorageRecordId(int id) {
+        DatabaseConnection conn = new DatabaseConnection();
         try{
             Packaging packaging = null;
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlFindByStorageRecordId = "SELECT id, expiration_date, number_of_seeds " +
@@ -75,15 +78,17 @@ public class PackagingDaoImpl implements PackagingDao{
                     packaging = new Packaging(packagingId, expirationDate, numberOfSeeds);
                 }
 
+            } catch (Exception e){
+                throw new SQLException(e);
             }
-
-            conn.close();
 
             return packaging;
         } catch (SQLException e){
             throw new RuntimeException("There has been a problem find your packaging by the storage record id", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 }

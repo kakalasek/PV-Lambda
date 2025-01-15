@@ -30,13 +30,17 @@ public class ImportStorageRecordsFromCsvCommand implements Command {
 
             List<List<String>> csvValues = FileUtils.readCsvFile(filePath);
 
+            ArrayList<StorageRecord> storageRecords = new ArrayList<>();
+
             for(int i = 1; i < csvValues.size(); i++){
                 List<String> currentRecord = csvValues.get(i);
                 Plant plant = plantDao.findByName(currentRecord.get(0));
                 Packaging packaging = new Packaging(Date.valueOf(currentRecord.get(2)), Integer.parseInt(currentRecord.get(1)));
                 StorageRecord storageRecord = new StorageRecord(packaging, plant);
-                storageRecordDao.insert(storageRecord);
+                storageRecords.add(storageRecord);
             }
+
+            storageRecordDao.bulkInsert(storageRecords);
 
             System.out.println("Inserting from the csv file completed successfully");
 

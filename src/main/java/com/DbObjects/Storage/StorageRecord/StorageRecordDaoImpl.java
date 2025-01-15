@@ -18,9 +18,9 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
      */
     @Override
     public ArrayList<StorageRecord> findAll() {
+        DatabaseConnection conn = new DatabaseConnection();
         try {
             ArrayList<StorageRecord> storageRecords = new ArrayList<>();
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlSelectAll = "SELECT * FROM Stored_plants;";
@@ -53,15 +53,18 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
                     StorageRecord storageRecord = new StorageRecord(id, packaging, plant);
                     storageRecords.add(storageRecord);
                 }
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
-            conn.close();
 
             return storageRecords;
         } catch (SQLException e) {
             throw new RuntimeException("There has been a problem returning all the storage records");
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
@@ -71,9 +74,9 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
      */
     @Override
     public ArrayList<ArrayList<String>> findNumberOfStoredSeedsPerPlant() {
+        DatabaseConnection conn = new DatabaseConnection();
         try{
             ArrayList<ArrayList<String>> totalNumberOfSeedsPerPlant = new ArrayList<>();
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlSelectTotalNumberOfSeedsPerPlant = "SELECT SUM(Packaging.number_of_seeds) AS Total_Number_Of_Seeds, Plant.name AS Plant_Name FROM Storage INNER JOIN Packaging ON Storage.packaging_id = Packaging.id INNER JOIN Plant ON Storage.plant_id = Plant.id GROUP BY Plant.name";
@@ -91,9 +94,9 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
 
                     totalNumberOfSeedsPerPlant.add(record);
                 }
+            } catch (Exception e){
+                throw new SQLException(e);
             }
-
-            conn.close();
 
             return totalNumberOfSeedsPerPlant;
 
@@ -101,6 +104,72 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
             throw new RuntimeException("There has been a problem selecting the number of stored seeds per plant", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
+        }
+    }
+
+    /**
+     * Will insert multiple storage records at once. Note that it will wrap them inside a transaction, so if anything fails, they will be rolled back
+     * @param storageRecords The ArrayList of Storage Records you want to insert
+     */
+    @Override
+    public void bulkInsert(ArrayList<StorageRecord> storageRecords) {
+        DatabaseConnection conn = new DatabaseConnection();
+        try{
+            conn.connect();
+            conn.getConnection().setAutoCommit(false);
+
+            for(StorageRecord storageRecord : storageRecords) {
+                String sqlInsertPackaging = "INSERT INTO Packaging(expiration_date, number_of_seeds) " +
+                        "VALUES (?, ?);";
+                int packagingId = 0;
+                Packaging packaging = storageRecord.getPackaging();
+
+                try (PreparedStatement psInsertPackaging = conn.getConnection().prepareStatement(sqlInsertPackaging, Statement.RETURN_GENERATED_KEYS)) {
+                    psInsertPackaging.setDate(1, packaging.getExpirationDate());
+                    psInsertPackaging.setInt(2, packaging.getNumberOfSeeds());
+
+                    psInsertPackaging.execute();
+
+                    try (ResultSet generatedKeys = psInsertPackaging.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            packagingId = generatedKeys.getInt(1);
+                        }
+                    } catch (Exception e){
+                        throw new SQLException(e);
+                    }
+                } catch (Exception e){
+                    throw new SQLException(e);
+                }
+
+                String sqlStorageInsert = "INSERT INTO Storage(plant_id, packaging_id) " +
+                        "VALUES (?, ?);";
+
+                try (PreparedStatement psStorageInsert = conn.getConnection().prepareStatement(sqlStorageInsert)) {
+                    psStorageInsert.setInt(1, storageRecord.getPlant().getId());
+                    psStorageInsert.setInt(2, packagingId);
+
+                    psStorageInsert.execute();
+                } catch (Exception e){
+                    throw new SQLException(e);
+                }
+            }
+
+            conn.getConnection().commit();
+
+        } catch (SQLException e){
+            try{
+                conn.getConnection().rollback();
+            } catch (Exception ee){
+                throw new RuntimeException("There has been a problem with rolling back the transaction of bulk insert", ee);
+            }
+            throw new RuntimeException("There has been a problem with bulk inserting the storage records", e);
+        } catch (ConnectionException e){
+            System.out.println("hello");
+            throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
@@ -115,8 +184,8 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
      */
     @Override
     public void insert(StorageRecord item) {
+        DatabaseConnection conn = new DatabaseConnection();
         try {
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
             conn.getConnection().setAutoCommit(false);
 
@@ -132,6 +201,8 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
                 if (rs.next()) {
                     plantId = rs.getInt("id");
                 }
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
             String sqlInsertPackaging = "INSERT INTO Packaging(expiration_date, number_of_seeds) " +
@@ -149,7 +220,11 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
                     if (generatedKeys.next()) {
                         packagingId = generatedKeys.getInt(1);
                     }
+                } catch (Exception e){
+                    throw new SQLException(e);
                 }
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
             String sqlStorageInsert = "INSERT INTO Storage(plant_id, packaging_id) " +
@@ -160,15 +235,23 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
                 psStorageInsert.setInt(2, packagingId);
 
                 psStorageInsert.execute();
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
             conn.getConnection().commit();
-            conn.close();
 
         } catch (SQLException e){
+            try{
+                conn.getConnection().rollback();
+            } catch (SQLException ee){
+                throw new RuntimeException("There has been a problem with rolling back the transaction of insert", ee);
+            }
             throw new RuntimeException("There has been a problem with inserting the storage record", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
@@ -183,8 +266,8 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
      */
     @Override
     public void delete(int id) {
+        DatabaseConnection conn = new DatabaseConnection();
         try{
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlDelete = " CALL remove_seeds(?);";
@@ -193,6 +276,8 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
                 psDelete.setInt(1, id);
 
                 psDelete.execute();
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
            conn.close();
@@ -200,6 +285,8 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
             throw new RuntimeException("There has been a problem deleting the storage record", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
@@ -211,8 +298,8 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
      */
     @Override
     public void updateNumberOfSeeds(StorageRecord storageRecord, int newNumberOfSeeds) {
+        DatabaseConnection conn = new DatabaseConnection();
         try {
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlUpdateNumberOfSeeds = "CALL plant_seeds(?, ?);";
@@ -222,13 +309,16 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
                 psUpdateNumberOfSeeds.setInt(2, newNumberOfSeeds);
 
                 psUpdateNumberOfSeeds.execute();
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
-            conn.close();
         } catch (SQLException e){
             throw new RuntimeException("There has been a problem when updating the number of seeds", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.DbObjects.Examples;
 
 import com.CustomExceptions.ConnectionException;
-import com.Database.DatabaseConnection;
 import com.DbObjects.Storage.Packaging.Packaging;
 
 import java.sql.*;

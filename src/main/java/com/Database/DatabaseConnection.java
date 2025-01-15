@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * This class serves as a connection do the database. It provides basic methods to interact with the database.
  */
-public class DatabaseConnection {
+public class DatabaseConnection{
 
     private final String url;
     private final String username;
@@ -42,6 +42,8 @@ public class DatabaseConnection {
 
         } catch (IOException e){
             throw new LoadingPropertiesException("Loading properties failed", e);
+        } catch (ConnectionException e){
+            throw new ConnectionException(e.getMessage(), e);
         }
     }
 
@@ -53,6 +55,14 @@ public class DatabaseConnection {
     public Connection getConnection(){
         if (connection == null) throw new ConnectionException("No connection was established for this session");
         return connection;
+    }
+
+    /**
+     * Simply tells if this database connection has established a connection or not
+     * @return True if a connection was established, False if not
+     */
+    public boolean isConnected(){
+        return connection != null;
     }
 
     /**

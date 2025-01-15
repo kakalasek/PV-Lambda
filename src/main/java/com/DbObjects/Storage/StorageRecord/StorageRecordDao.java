@@ -8,4 +8,5 @@ public interface StorageRecordDao extends Dao<StorageRecord> {
     void updateNumberOfSeeds(StorageRecord storageRecord, int newNumberOfSeeds);
     ArrayList<StorageRecord> findAll();
     ArrayList<ArrayList<String>> findNumberOfStoredSeedsPerPlant();
+    void bulkInsert(ArrayList<StorageRecord> storageRecords);
 }

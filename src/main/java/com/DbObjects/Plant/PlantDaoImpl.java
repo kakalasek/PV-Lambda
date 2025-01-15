@@ -64,9 +64,9 @@ public class PlantDaoImpl implements PlantDao {
      */
     @Override
     public Plant findByName(String name) {
+        DatabaseConnection conn = new DatabaseConnection();
         try{
             Plant plant = null;
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlSelectByName = "SELECT * FROM Plant WHERE name = ?;";
@@ -95,13 +95,16 @@ public class PlantDaoImpl implements PlantDao {
                             plantPreGrowing);
 
                 }
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
-            conn.close();
 
             return plant;
         } catch (SQLException e) {
             throw new RuntimeException("There has been a problem selecting the plant by name", e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 

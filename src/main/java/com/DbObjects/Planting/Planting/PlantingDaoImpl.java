@@ -21,9 +21,9 @@ public class PlantingDaoImpl implements PlantingDao {
      */
     @Override
     public ArrayList<Planting> findAll(){
+        DatabaseConnection conn = new DatabaseConnection();
         try {
             ArrayList<Planting> plantings = new ArrayList<>();
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlSelectAll = "SELECT * FROM Planted_plants";
@@ -60,15 +60,18 @@ public class PlantingDaoImpl implements PlantingDao {
                     Planting planting = new Planting(plantingId, dateFrom, dateTo, numberOfSeeds, flowerbed, plant);
                     plantings.add(planting);
                 }
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
-            conn.close();
 
             return plantings;
         } catch (SQLException e){
             throw new RuntimeException("The has been a problem when selecting all the plantings from the database", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
@@ -80,9 +83,9 @@ public class PlantingDaoImpl implements PlantingDao {
      */
     @Override
     public ArrayList<Planting> findAllPlanted() {
+        DatabaseConnection conn = new DatabaseConnection();
         try {
             ArrayList<Planting> plantings = new ArrayList<>();
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlSelectAll = "SELECT * FROM Planted_plants WHERE Date_Of_Disposal IS NULL;";
@@ -119,15 +122,18 @@ public class PlantingDaoImpl implements PlantingDao {
                     Planting planting = new Planting(plantingId, dateFrom, dateTo, numberOfSeeds, flowerbed, plant);
                     plantings.add(planting);
                 }
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
-            conn.close();
 
             return plantings;
         } catch (SQLException e){
             throw new RuntimeException("There has been a problem selecting all the planted plants", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
@@ -138,8 +144,8 @@ public class PlantingDaoImpl implements PlantingDao {
      */
     @Override
     public void liquidatePlanting(int id, Date liquidationDate) {
+        DatabaseConnection conn = new DatabaseConnection();
         try {
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlLiquidatePlanting = "UPDATE Planting SET date_to = ? WHERE id = ?;";
@@ -149,14 +155,17 @@ public class PlantingDaoImpl implements PlantingDao {
                 psInsertPlanting.setInt(2, id);
 
                 psInsertPlanting.execute();
+            } catch (Exception e){
+                throw new SQLException(e);
             }
 
-            conn.close();
 
         } catch (SQLException e){
             throw new RuntimeException("There has been a problem liquidating the planting", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
@@ -171,8 +180,8 @@ public class PlantingDaoImpl implements PlantingDao {
      */
     @Override
     public void insert(Planting item){
+        DatabaseConnection conn = new DatabaseConnection();
         try {
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlInsertPlanting = "INSERT INTO Planting(date_from, number_of_seeds, plant_id, flowerbed_id) " +
@@ -186,14 +195,16 @@ public class PlantingDaoImpl implements PlantingDao {
 
                 psInsertPlanting.execute();
 
+            } catch (Exception e){
+                throw new SQLException(e);
             }
-
-            conn.close();
 
         } catch (SQLException e){
             throw new RuntimeException("There has been a problem inserting the planting", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 

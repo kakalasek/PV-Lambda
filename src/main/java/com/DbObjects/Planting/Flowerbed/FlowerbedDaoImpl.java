@@ -16,9 +16,9 @@ public class FlowerbedDaoImpl implements FlowerbedDao {
      */
     @Override
     public ArrayList<Flowerbed> findAll() {
+        DatabaseConnection conn = new DatabaseConnection();
         try {
             ArrayList<Flowerbed> flowerbeds = new ArrayList<>();
-            DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
 
             String sqlSelectAll = "SELECT * FROM Flowerbed;";
@@ -34,9 +34,9 @@ public class FlowerbedDaoImpl implements FlowerbedDao {
 
                     flowerbeds.add(flowerbed);
                 }
+            } catch (Exception e){
+                throw new SQLException(e);
             }
-
-            conn.close();
 
             return flowerbeds;
 
@@ -44,6 +44,8 @@ public class FlowerbedDaoImpl implements FlowerbedDao {
             throw new RuntimeException("There has been a problem selecting all the flowerbeds", e);
         } catch (ConnectionException e){
             throw new RuntimeException(e.getMessage(), e);
+        } finally {
+            if(conn.isConnected()) conn.close();
         }
     }
 
