@@ -1,9 +1,11 @@
 package com.Commands.Update;
 
+import com.CustomExceptions.InvalidOptionException;
 import com.DbObjects.Planting.Planting.Planting;
 import com.DbObjects.Planting.Planting.PlantingDaoImpl;
 import com.Commands.Command;
 import com.utils.HandyTools.HandyTools;
+import com.utils.InputChecker.InputChecker;
 import de.vandermeer.asciitable.AsciiTable;
 
 import java.sql.Date;
@@ -42,6 +44,9 @@ public class LiquidatePlantCommand implements Command {
     public void execute() {
         try{
             ArrayList<Planting> plantings = plantingDao.findAllPlanted();
+
+            if(plantings.isEmpty()) throw new NullPointerException("There are no planted plants");
+
             String renderedTable = generatePlantingTable(plantings);
 
             System.out.println(renderedTable);
@@ -51,6 +56,8 @@ public class LiquidatePlantCommand implements Command {
             Planting planting = plantings.get(plantingPick);
 
             Date liquidationDate = HandyTools.pickDate("liquidation date");
+
+            if(liquidationDate.before(planting.getDateFrom())) throw new InvalidOptionException("The liquidation date must be after the planting date");
 
             plantingDao.liquidatePlanting(planting.getId(), liquidationDate);
 

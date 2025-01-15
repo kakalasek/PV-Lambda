@@ -39,6 +39,7 @@ build/
 
 ### Configuration ###
 out/artifacts/PV_Lambda_jar/config.properties
+config.properties
 
 ## Temp ##
 GardenReport.txt

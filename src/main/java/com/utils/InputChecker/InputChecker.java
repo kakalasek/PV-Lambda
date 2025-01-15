@@ -5,6 +5,7 @@ import com.utils.FileUtils.FileUtils;
 import java.io.File;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
+import java.sql.Date;
 
 /**
  * Provides methods for simple input checking, return true or false
@@ -22,6 +23,11 @@ public class InputChecker {
         return input.matches(positiveNumberRegex);
     }
 
+    /**
+     * Validates if the filepath is a valid absolute filepath
+     * @param absoluteFilepath The filepath you want to validate
+     * @return True if the filepath is valid, False if not
+     */
     public static boolean isValidAbsoluteFilepath(String absoluteFilepath) {
         try {
             Paths.get(absoluteFilepath);
@@ -34,4 +40,5 @@ public class InputChecker {
             return false;
         }
     }
+
 }

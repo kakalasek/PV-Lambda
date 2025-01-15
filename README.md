@@ -105,6 +105,13 @@ java -jar PV-Lambda.jar
 
 Note that this program uses java 21, so you should start it with a compatible version. It also does no support Windows, only Linux machines
 
+How To Use
+===
+
+In the main menu, you simply type the number displayed on the left to the menu item and press enter. The respective
+menu item will walk you through its steps.          
+If you want to stop the program, simply type *end* and press enter
+
 Operation Diagram
 ===
 

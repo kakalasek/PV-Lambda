@@ -118,6 +118,7 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
         try {
             DatabaseConnection conn = new DatabaseConnection();
             conn.connect();
+            conn.getConnection().setAutoCommit(false);
 
             String sqlGetPlantId = "SELECT id FROM Plant WHERE name = ?;";
             int plantId = -1;
@@ -161,6 +162,7 @@ public class StorageRecordDaoImpl implements StorageRecordDao {
                 psStorageInsert.execute();
             }
 
+            conn.getConnection().commit();
             conn.close();
 
         } catch (SQLException e){
