@@ -74,6 +74,8 @@ Documentation
 Setup
 ---
 
+NOTE: This program is only startable on Linux machine, it is not tested at all on any other operating system. There rest of this documentation will assume you are working in a Linux environment!
+
 First clone the GitHub repo of this project using this command:
 
 ```shell
@@ -95,6 +97,13 @@ by mysqldump in the uppermost directory under the name *garden.sql*. You can do 
 sudo mariadb < garden.sql
 ```
 
+Then we will start the mariadb shell by this command:
+
+```shell
+sudo mariadb
+```
+
+You will be logged in as the root user, which can do everything.    
 We will then need to create a new user for our database. In order for the views to work properly, we need to create a
 user named *gardenAdmin*. We can create him and grant him privileges like so:
 
@@ -114,7 +123,7 @@ start the program with this command:
 java -jar PV-Lambda.jar 
 ```
 
-Note that this program uses java 21, so you should start it with a compatible version. It also does no support Windows, only Linux machines
+Note that this program uses java 21, so you should start it with a compatible version
 
 How To Use
 ===
@@ -152,8 +161,7 @@ Import of Data
 The program provides a way to input some data in a csv file. In the uppermost directory, there is an example
 csv file called *example_values.csv*. This file can demonstrate, which format of a csv file will the program
 accept. If your csv file will be different or one of the values will be invalid, the program will tell you,
-and it will not continue with the insert. Important thing to note however is, that if the problematic record
-is somewhere in the middle of the csv, all the records above could be inserted without a problem.
+and it will not continue and will rollback the insert.
 
 Exceptions and Errors
 ===
